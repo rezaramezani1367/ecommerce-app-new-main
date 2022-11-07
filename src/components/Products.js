@@ -39,10 +39,9 @@ const Products = () => {
             {productData.map((item, index) => (
               <Grid xs={12} md={6} lg={4} key={item._id}>
                 <Card onClick={() => navigate(`/product/${item._id}`)}>
-                  <CardActionArea >
+                  <CardActionArea>
                     <CardMedia
                       component="img"
-                      height="140"
                       image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
                       alt="green iguana"
                     />
@@ -74,7 +73,7 @@ const Products = () => {
                       <Stack direction="row" className="mb-4">
                         <Typography
                           variant="span"
-                          className="font-bold text-2xl mr-2 uppercase"
+                          className="font-bold text-2xl mr-2 uppercase text-red-600"
                         >
                           {item.name}
                         </Typography>

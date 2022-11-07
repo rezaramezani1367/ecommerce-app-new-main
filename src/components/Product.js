@@ -20,7 +20,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import { getProduct } from "../redux/action";
 import Grid from "@mui/material/Unstable_Grid2";
-import { Send, Album, StarOutline } from "@mui/icons-material";
+import { Send, Circle, StarOutline, Album, ArrowForward, PlayArrow } from "@mui/icons-material";
 import { Box } from "@mui/system";
 
 const Product = () => {
@@ -43,7 +43,7 @@ const Product = () => {
       return (
         <>
           {productData.map((item, index) => (
-            <Grid container key={item._id} spacing={4}>
+            <Grid container key={item._id} spacing={1} xs={12}>
               <Grid xs={12} md={6} className="relative">
                 <img
                   src="https://mui.com/static/images/cards/contemplative-reptile.jpg"
@@ -76,12 +76,12 @@ const Product = () => {
                   sx={{
                     bgcolor: "background.paper",
                   }}
-                  className=""
+                  // className="border-l-2"
                 >
                   {/* Name */}
-                  <ListItem alignItems="flex-start">
-                    <ListItemIcon>
-                      <Album />
+                  <ListItem alignItems="flex-center">
+                    <ListItemIcon className="relative left-6">
+                      <PlayArrow className="" sx={{fontSize:'1rem'}}  />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -106,9 +106,9 @@ const Product = () => {
                   </ListItem>
                   <Divider variant="inset" component="li" />
                   {/* category */}
-                  <ListItem alignItems="flex-start">
-                    <ListItemIcon>
-                      <Album />
+                  <ListItem alignItems="flex-center">
+                    <ListItemIcon className="relative left-6">
+                      <PlayArrow className="" sx={{fontSize:'1rem'}}  />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -132,9 +132,9 @@ const Product = () => {
                     />
                   </ListItem>
                   <Divider variant="inset" component="li" />
-                  <ListItem alignItems="flex-start">
-                    <ListItemIcon>
-                      <Album />
+                  <ListItem alignItems="flex-center">
+                    <ListItemIcon className="relative left-6">
+                      <PlayArrow className="" sx={{fontSize:'1rem'}}  />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -158,9 +158,9 @@ const Product = () => {
                     />
                   </ListItem>
                   <Divider variant="inset" component="li" />
-                  <ListItem alignItems="flex-start">
-                    <ListItemIcon>
-                      <Album />
+                  <ListItem alignItems="flex-center">
+                    <ListItemIcon className="relative left-6">
+                      <PlayArrow className="" sx={{fontSize:'1rem'}}  />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -184,9 +184,9 @@ const Product = () => {
                     />
                   </ListItem>
                   <Divider variant="inset" component="li" />
-                  <ListItem alignItems="flex-start">
-                    <ListItemIcon>
-                      <Album />
+                  <ListItem alignItems="flex-center">
+                    <ListItemIcon className="relative left-6">
+                      <PlayArrow className="" sx={{fontSize:'1rem'}}  />
                     </ListItemIcon>
                     <ListItemText
                       primary={
@@ -210,9 +210,9 @@ const Product = () => {
                     />
                   </ListItem>
                   <Divider variant="inset" component="li" />
-                  <ListItem alignItems="flex-start">
-                    <ListItemIcon>
-                      <Album />
+                  <ListItem alignItems="flex-center">
+                    <ListItemIcon className="relative left-6">
+                      <PlayArrow className="" sx={{fontSize:'1rem'}}  />
                     </ListItemIcon>
                     <ListItemText
                       primary={

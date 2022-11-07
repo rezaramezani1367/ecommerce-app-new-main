@@ -11,6 +11,7 @@ import {
   MenuItem,
   Menu,
   styled,
+  Container,
 } from "@mui/material";
 
 import {
@@ -20,7 +21,8 @@ import {
   AccountCircle,
   Mail as MailIcon,
   Notifications as NotificationsIcon,
-  LightMode
+  LightMode,
+  Home,
 } from "@mui/icons-material";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -72,21 +74,23 @@ export default function Header({ setMode, mode }) {
   );
 
   return (
-    <>
-      <AppBar position="sticky">
+    <AppBar position="sticky">
+      <Container>
         <Toolbar>
-          <IconButton
-            size="large"
-            edge="start"
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
-          <NavLink to='/'>
-          <Typography variant="h6" noWrap component="div">
-            Home
-          </Typography>
+          <NavLink to="/">
+            <IconButton
+              size="large"
+              edge="start"
+              color="inherit"
+              aria-label="open drawer"
+            >
+              <Home />
+            </IconButton>
+          </NavLink>
+          <NavLink to="/" sx={{}}>
+            <Typography variant="h6" noWrap component="span">
+              Home
+            </Typography>
           </NavLink>
 
           <Box sx={{ flexGrow: 1 }} />
@@ -99,13 +103,16 @@ export default function Header({ setMode, mode }) {
                 toggleColorMode();
               }}
             >
-              {mode=='light'?<LightMode/>:<NightsStay />}
+              {mode == "light" ? <LightMode /> : <NightsStay />}
             </IconButton>
-            <IconButton size="large" aria-label="cart" color="inherit">
-              <StyledBadge badgeContent={444} color="error">
-               <ShoppingCart />
-              </StyledBadge>
-            </IconButton>
+            <NavLink to='/cart'>
+              
+              <IconButton size="large" aria-label="cart" color="inherit">
+                <StyledBadge badgeContent={444} color="error">
+                  <ShoppingCart />
+                </StyledBadge>
+              </IconButton>
+            </NavLink>
             <IconButton
               size="large"
               edge="end"
@@ -119,9 +126,9 @@ export default function Header({ setMode, mode }) {
             </IconButton>
           </Box>
         </Toolbar>
-      </AppBar>
 
-      {renderMenu}
-    </>
+        {renderMenu}
+      </Container>
+    </AppBar>
   );
 }

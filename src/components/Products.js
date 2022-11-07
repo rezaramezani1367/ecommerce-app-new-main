@@ -6,6 +6,7 @@ import {
   CardMedia,
   Rating,
   Typography,
+  Container
 } from "@mui/material";
 
 import React, { useEffect } from "react";
@@ -35,7 +36,7 @@ const Products = () => {
     default:
       return (
         <>
-          <Grid container spacing={2} xs={12}>
+          <Grid container spacing={4}>
             {productData.map((item, index) => (
               <Grid xs={12} md={6} lg={4} key={item._id}>
                 <Card onClick={() => navigate(`/product/${item._id}`)}>

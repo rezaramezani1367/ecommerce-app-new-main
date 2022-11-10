@@ -7,7 +7,7 @@ module.exports = {
     extend: {
       gridTemplateColumns: {
         // added new 4 column grid as new4
-        'new4': 'repeat(4, minmax(50px, 500px))'
+        'new4': '116px,repeat(4, 1fr)'
         }
     },
   },

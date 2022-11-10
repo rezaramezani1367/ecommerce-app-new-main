@@ -12,9 +12,9 @@ import {
 import React, { useEffect } from "react";
 import Grid from "@mui/material/Unstable_Grid2";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../redux/action";
+import { getAllProducts } from "../redux/actionProducts";
 import { Stack } from "@mui/system";
-import { StarOutline } from "@mui/icons-material";
+import { StarOutline,Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 
 const Products = () => {
@@ -36,12 +36,12 @@ const Products = () => {
     default:
       return (
         <>
-          <Grid container spacing={4}>
+          <Grid container spacing={3}>
             {productData.map((item, index) => (
               <Grid xs={12} md={6} lg={4} key={item._id}>
                 <Card onClick={() => navigate(`/product/${item._id}`)} elevation={4}>
                   <CardActionArea>
-                    <Box className="h-80 w-full md:h-64 p-3 flex justify-center items-center border-b bg-white shadow-inner">
+                    <Box className="h-80 w-full md:h-64 p-3 flex justify-center items-center border-b bg-white">
                       <img
                         src={item.image}
                         alt={item.name}
@@ -56,8 +56,9 @@ const Products = () => {
                     <CardContent className="relative ">
                       <Stack
                         direction="row"
-                        alignItems="center"
-                        className="absolute -top-5 left-0 w-full px-4 text-yellow-500"
+                        alignItems="center" 
+                        justifyContent='space-between'
+                        className="absolute -top-7 left-0 w-full px-4 text-yellow-500"
                       >
                         <Rating
                           size="small"
@@ -77,6 +78,7 @@ const Products = () => {
                             />
                           }
                         />
+                        
                       </Stack>
                       <Stack direction="row" className="mb-4">
                         <Typography

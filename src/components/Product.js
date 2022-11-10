@@ -3,21 +3,23 @@ import { Stack, Rating, Button, Box, Paper, Typography } from "@mui/material";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
-import { getProduct } from "../redux/action";
+import { getProduct } from "../redux/actionProducts";
 import Grid from "@mui/material/Unstable_Grid2";
-import { StarOutline, Add, Remove } from "@mui/icons-material";
+import { StarOutline, Add, Remove, Visibility ,ShoppingCart} from "@mui/icons-material";
+import { addToCart } from "../redux/actionCart";
 
 const Product = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const {
-    products: { productLoading, productData, productError },
+    products: { productLoading, productData, productError },cart:{ cartLoading, cartData, cartError}
   } = useSelector((last) => last);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProduct(id));
   }, []);
-  // console.log({ productLoading, productData, productError });
+  // console.log({ cartLoading, cartData, cartError});
+ 
   switch (true) {
     case productLoading:
       return <div>loading...</div>;
@@ -50,8 +52,12 @@ const Product = () => {
                     }}
                   />
                 </Box>
-
-                <Box className="absolute bottom-8 left-5 px-4 text-yellow-500 z-10">
+                <Stack
+                  direction="row"
+                  alignItems="center"
+                  justifyContent="space-between"
+                  className="absolute bottom-5 left-3 text-yellow-500 z-10 w-full"
+                >
                   <Rating
                     size="small"
                     name="text-feedback"
@@ -70,7 +76,11 @@ const Product = () => {
                       />
                     }
                   />
-                </Box>
+                  <Box className="text-red-800 w-20 font-bold">
+                    <Typography variant="span"> {item.numReviews} 1</Typography>
+                    <Visibility fontSize="small" />
+                  </Box>
+                </Stack>
               </Grid>
               <Grid
                 container
@@ -78,7 +88,7 @@ const Product = () => {
                 md={6}
                 padding={2.5}
                 rowSpacing={2}
-                className="h-full "
+                className="h-full"
               >
                 <Grid
                   xs={3}
@@ -125,64 +135,83 @@ const Product = () => {
                 <Grid xs={9} className="border border-b-0  capitalize">
                   {item.countInStock}
                 </Grid>
-                <Grid xs={3} className="font-bold border border-r-0 capitalize">
+                <Grid
+                  xs={3}
+                  className="font-bold border border-r-0 border-b-0  capitalize"
+                >
                   price
                 </Grid>
-                <Grid xs={9} className="border capitalize text-red-500">
+                <Grid
+                  xs={9}
+                  className="border border-b-0  capitalize text-red-500"
+                >
                   {item.price.toFixed(2)}$
+                </Grid>
+                <Grid xs={3} className="font-bold border border-r-0 capitalize">
+                  description
+                </Grid>
+                <Grid xs={9} className="border capitalize">
+                  {item.description}
                 </Grid>
                 <Stack
                   direction="row"
                   className="mt-5 w-full gap-2 items-center"
                 >
-                  <Paper
-                    elevation={4}
-                    className="flex justify-between items-center overflow-hidden"
-                  >
-                    <Button
-                      size="large"
-                      disableElevation
-                      disableRipple
-                      disableFocusRipple
-                     sx={{ borderRadius: "0",minWidth:50}}
-                    >
-                      <Remove sx={{ color: "red" }} />
+                  {true ? (
+                    <Button variant="contained" startIcon={<ShoppingCart />} onClick={()=>dispatch(addToCart(item))}>
+                      Add To Cart
                     </Button>
-                    <Stack>
-                      <Typography
-                        variant="span"
-                        className="w-12 min-h-full font-bold text-center text-lg"
+                  ) : (
+                    <>
+                      <Paper
+                        elevation={4}
+                        className="flex justify-between items-center overflow-hidden"
                       >
-                        12
-                      </Typography>
-                      {/* <Typography
+                        <Button
+                          size="large"
+                          disableElevation
+                          disableRipple
+                          disableFocusRipple
+                          sx={{ borderRadius: "0", minWidth: 50 }}
+                        >
+                          <Remove sx={{ color: "red" }} />
+                        </Button>
+                        <Stack>
+                          <Typography
+                            variant="span"
+                            className="w-12 min-h-full font-bold text-center text-lg"
+                          >
+                            12
+                          </Typography>
+                          {/* <Typography
                         variant="span"
                         className="w-12 min-h-full font-bold text-center text-red-500"
                       >
                         max
                       </Typography> */}
-                    </Stack>
-                    <Button
-                      size="large"
-                      disableElevation
-                      disableRipple
-                      disableFocusRipple
-                     sx={{ borderRadius: "0",minWidth:50}}
-                    >
-                      <Add />
-                    </Button>
-                  </Paper>
-                  <Box>
-                    <Button
-                      size="small"
-                      variant="outlined"
-                      color="secondary"
-                      className="capitalize"
-                      onClick={() => navigate("/cart")}
-                    >
-                      view Cart
-                    </Button>
-                  </Box>
+                        </Stack>
+                        <Button
+                          size="large"
+                          disableElevation
+                          disableRipple
+                          disableFocusRipple
+                          sx={{ borderRadius: "0", minWidth: 50 }}
+                        >
+                          <Add />
+                        </Button>
+                      </Paper>
+
+                      <Button
+                        size="small"
+                        variant="outlined"
+                        color="secondary"
+                        className="capitalize"
+                        onClick={() => navigate("/cart")}
+                      >
+                        view Cart
+                      </Button>
+                    </>
+                  )}
                 </Stack>
               </Grid>
             </Grid>

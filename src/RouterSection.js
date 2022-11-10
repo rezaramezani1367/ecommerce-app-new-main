@@ -7,7 +7,7 @@ import Cart from "./components/Cart";
 
 const RouterSection = () => {
   return (
-    <Container className='my-4'>
+    <Container className='py-4'>
       <Routes>
         <Route path="/">
           <Route index element={<Products />} />

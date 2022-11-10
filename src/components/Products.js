@@ -6,7 +6,7 @@ import {
   CardMedia,
   Rating,
   Typography,
-  Container
+  Container,
 } from "@mui/material";
 
 import React, { useEffect } from "react";
@@ -39,18 +39,25 @@ const Products = () => {
           <Grid container spacing={4}>
             {productData.map((item, index) => (
               <Grid xs={12} md={6} lg={4} key={item._id}>
-                <Card onClick={() => navigate(`/product/${item._id}`)}>
+                <Card onClick={() => navigate(`/product/${item._id}`)} elevation={4}>
                   <CardActionArea>
-                    <CardMedia
-                      component="img"
-                      image="https://mui.com/static/images/cards/contemplative-reptile.jpg"
-                      alt="green iguana"
-                    />
+                    <Box className="h-80 w-full md:h-64 p-3 flex justify-center items-center border-b bg-white shadow-inner">
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        onError={({ currentTarget }) => {
+                          currentTarget.onerror = null; // prevents looping
+                          currentTarget.src='https://mui.com/static/images/cards/contemplative-reptile.jpg';
+                        }}
+                      
+                        className="max-h-full max-w-full"
+                      />
+                    </Box>
                     <CardContent className="relative ">
                       <Stack
                         direction="row"
                         alignItems="center"
-                        className="absolute -top-8 left-0 w-full px-4 text-yellow-500"
+                        className="absolute -top-5 left-0 w-full px-4 text-yellow-500"
                       >
                         <Rating
                           size="small"
@@ -63,7 +70,7 @@ const Products = () => {
                           }}
                           emptyIcon={
                             <StarOutline
-                              className="text-white"
+                              className="text-slate-400"
                               sx={{
                                 fontSize: "1rem",
                               }}
@@ -74,7 +81,7 @@ const Products = () => {
                       <Stack direction="row" className="mb-4">
                         <Typography
                           variant="span"
-                          className="font-bold text-2xl mr-2 uppercase text-red-600"
+                          className="font-bold text-2xl mr-2 capitalize text-red-600 line-clamp-1"
                         >
                           {item.name}
                         </Typography>

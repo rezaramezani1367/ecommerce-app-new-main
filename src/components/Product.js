@@ -144,7 +144,7 @@ const Product = () => {
                       disableElevation
                       disableRipple
                       disableFocusRipple
-                      sx={{ borderRadius: "0" }}
+                     sx={{ borderRadius: "0",minWidth:50}}
                     >
                       <Remove sx={{ color: "red" }} />
                     </Button>
@@ -155,19 +155,19 @@ const Product = () => {
                       >
                         12
                       </Typography>
-                      <Typography
+                      {/* <Typography
                         variant="span"
                         className="w-12 min-h-full font-bold text-center text-red-500"
                       >
                         max
-                      </Typography>
+                      </Typography> */}
                     </Stack>
                     <Button
                       size="large"
                       disableElevation
                       disableRipple
                       disableFocusRipple
-                      sx={{ borderRadius: "0" }}
+                     sx={{ borderRadius: "0",minWidth:50}}
                     >
                       <Add />
                     </Button>

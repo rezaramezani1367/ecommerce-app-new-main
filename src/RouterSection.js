@@ -4,6 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Product from "./components/Product";
 import Products from "./components/Products";
 import Cart from "./components/Cart";
+import Login from "./components/Login";
 
 const RouterSection = () => {
   return (
@@ -13,6 +14,7 @@ const RouterSection = () => {
           <Route index element={<Products />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
+          <Route path="/login" element={<Login />} />
         </Route>
       </Routes>
     </Container>

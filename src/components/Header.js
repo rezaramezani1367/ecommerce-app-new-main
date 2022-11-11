@@ -23,6 +23,8 @@ import {
   Notifications as NotificationsIcon,
   LightMode,
   Home,
+  Login,
+  Logout,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -35,15 +37,15 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 export default function Header({ setMode, mode }) {
-  const [countCard, setCountCard] = React.useState(0)
+  const [countCard, setCountCard] = React.useState(0);
   const {
     cart: { cartLoading, cartData, cartError },
   } = useSelector((last) => last);
   React.useEffect(() => {
-    let result=0;
-    cartData.forEach(item => {
-      result +=item.quantity;
-    })
+    let result = 0;
+    cartData.forEach((item) => {
+      result += item.quantity;
+    });
     setCountCard(result);
   }, [cartData]);
   const toggleColorMode = () => {
@@ -67,8 +69,8 @@ export default function Header({ setMode, mode }) {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: "top",
-        horizontal: "right",
+        vertical: 40,
+        horizontal:30,
       }}
       id={menuId}
       keepMounted
@@ -81,7 +83,7 @@ export default function Header({ setMode, mode }) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose}>LogOut</MenuItem>
+      <MenuItem onClick={handleMenuClose} sx={{justifyContent:'center'}}><Logout /></MenuItem>
     </Menu>
   );
 
@@ -124,17 +126,25 @@ export default function Header({ setMode, mode }) {
                 </StyledBadge>
               </IconButton>
             </NavLink>
-            <IconButton
-              size="large"
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
+            {true ? (
+              <NavLink to="/login">
+                <IconButton size="large" edge="end" color="inherit">
+                  <Login />
+                </IconButton>
+              </NavLink>
+            ) : (
+              <IconButton
+                size="large"
+                edge="end"
+                aria-label="account of current user"
+                aria-controls={menuId}
+                aria-haspopup="true"
+                onClick={handleProfileMenuOpen}
+                color="inherit"
+              >
+                <AccountCircle />
+              </IconButton>
+            )}
           </Box>
         </Toolbar>
 

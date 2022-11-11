@@ -1,4 +1,4 @@
-import { Add, Close, Delete, Remove } from "@mui/icons-material";
+import { Add, Close, ShoppingCart, Remove, Delete } from "@mui/icons-material";
 import {
   Paper,
   Box,
@@ -12,9 +12,6 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, minusFromCart, removeItmeCart } from "../redux/actionCart";
 
-
-
-
 const Cart = () => {
   const {
     cart: { cartLoading, cartData, cartError },
@@ -23,8 +20,9 @@ const Cart = () => {
   switch (true) {
     case Boolean(!cartData.length):
       return (
-        <Box className="flex justify-center items-center  text-red-600 font-bold h-96">
-          <Typography variant="h3" component="span">
+        <Box className="flex justify-center items-center  text-red-600 font-bold h-96 gap-2">
+          <ShoppingCart fontSize="large" />
+          <Typography variant="h4" component="span">
             Cart Is Empty
           </Typography>
         </Box>
@@ -139,7 +137,11 @@ const Cart = () => {
                         sx={{ borderRadius: "0", minWidth: 40 }}
                         onClick={() => dispatch(minusFromCart(item))}
                       >
-                        <Remove sx={{ color: "red" }} />
+                        {item.quantity == 1 ? (
+                          <Delete sx={{ color: "red" }} />
+                        ) : (
+                          <Remove sx={{ color: "red" }} />
+                        )}
                       </Button>
                       <Stack>
                         <Typography
@@ -148,12 +150,14 @@ const Cart = () => {
                         >
                           {item.quantity}
                         </Typography>
-                        {/* <Typography
-                      variant="span"
-                      className="w-12 min-h-full font-bold text-center text-red-500"
-                    >
-                      max
-                    </Typography> */}
+                        {item.quantity == item.countInStock && (
+                          <Typography
+                            variant="span"
+                            className="w-12 min-h-full font-bold text-center text-red-500"
+                          >
+                            max
+                          </Typography>
+                        )}
                       </Stack>
                       <Button
                         disableElevation
@@ -188,13 +192,11 @@ const Cart = () => {
                   </Stack>
                 </Grid>
               </Grid>
-              <Box className="absolute top-1 right-1">
-                <IconButton
-                  aria-label="delete"
-                  color="error"
-                  size="small"
-                  onClick={() => dispatch(removeItmeCart(index))}
-                >
+              <Box
+                className="absolute top-1 right-1"
+                onClick={() => dispatch(removeItmeCart(index))}
+              >
+                <IconButton aria-label="delete" color="error" size="small">
                   <Close fontSize="small" />
                 </IconButton>
               </Box>

@@ -30,7 +30,15 @@ export const addToCart = (item) => (dispatch, getState) => {
     if (currentDataCart.length) {
       const help = cartData.map((itm) => {
         if (itm._id == item._id) {
-          return { ...itm, quantity: itm.quantity + 1 };
+          if (itm.quantity == itm.countInStock) {
+            Toast.fire({
+              icon: "error",
+              title: `${item.name}  is max count in Stack`,
+            });
+            return itm;
+          } else {
+            return { ...itm, quantity: itm.quantity + 1 };
+          }
         } else {
           return itm;
         }
@@ -71,7 +79,6 @@ export const minusFromCart = (item) => (dispatch, getState) => {
   try {
     const { cartData } = getState().cart;
     const currentDataCart = cartData.filter((itm) => itm._id == item._id);
-    console.log(currentDataCart);
     if (currentDataCart.length && currentDataCart[0].quantity > 1) {
       const help = cartData.map((itm) => {
         if (itm._id == item._id) {
@@ -99,15 +106,13 @@ export const minusFromCart = (item) => (dispatch, getState) => {
           cartError: "",
         },
       });
-      if (help.length) {
-        localStorage.setItem("cart", JSON.stringify(help));
-      } else {
-        localStorage.removeItem("cart");
-        Toast.fire({
-          icon: "error",
-          title: `${item.name}  deleted from cart successfully`,
-        });
-      }
+      Toast.fire({
+        icon: "error",
+        title: `${item.name}  deleted from cart successfully`,
+      });
+      cartData.length
+        ? localStorage.setItem("cart", JSON.stringify(cartData))
+        : localStorage.removeItem("cart");
     }
   } catch (error) {
     dispatch({
@@ -122,11 +127,17 @@ export const removeItmeCart = (index) => (dispatch, getState) => {
     payload: { ...getState().cart, cartLoading: true },
   });
   try {
-    const { cartData } = getState().cart;
-
+    const {
+      cart: { cartData },
+    } = getState();
+    Toast.fire({
+      icon: "error",
+      title: `${cartData[index].name}  deleted from cart successfully`,
+    });
     cartData.splice(index, 1);
-    console.log({cartData,index,},cartData.length)
-
+    cartData.length
+      ? localStorage.setItem("cart", JSON.stringify(cartData))
+      : localStorage.removeItem("cart");
     dispatch({
       type: cartSuccess,
       payload: {
@@ -135,15 +146,6 @@ export const removeItmeCart = (index) => (dispatch, getState) => {
         cartError: "",
       },
     });
-    Toast.fire({
-      icon: "error",
-      title: `${cartData[index].name}  deleted from cart successfully`,
-    });
-    if (cartData.length) {
-      localStorage.setItem("cart", JSON.stringify(cartData));
-    } else {
-      localStorage.removeItem("cart");
-    }
   } catch (error) {
     dispatch({
       type: cartError,

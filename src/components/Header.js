@@ -24,6 +24,7 @@ import {
   LightMode,
   Home,
 } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -34,6 +35,17 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 export default function Header({ setMode, mode }) {
+  const [countCard, setCountCard] = React.useState(0)
+  const {
+    cart: { cartLoading, cartData, cartError },
+  } = useSelector((last) => last);
+  React.useEffect(() => {
+    let result=0;
+    cartData.forEach(item => {
+      result +=item.quantity;
+    })
+    setCountCard(result);
+  }, [cartData]);
   const toggleColorMode = () => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };
@@ -105,10 +117,9 @@ export default function Header({ setMode, mode }) {
             >
               {mode == "light" ? <LightMode /> : <NightsStay />}
             </IconButton>
-            <NavLink to='/cart'>
-              
+            <NavLink to="/cart">
               <IconButton size="large" aria-label="cart" color="inherit">
-                <StyledBadge badgeContent={444} color="error">
+                <StyledBadge badgeContent={countCard} color="error">
                   <ShoppingCart />
                 </StyledBadge>
               </IconButton>

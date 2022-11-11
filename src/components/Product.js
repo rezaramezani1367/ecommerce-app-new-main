@@ -1,25 +1,37 @@
 import { Stack, Rating, Button, Box, Paper, Typography } from "@mui/material";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import { getProduct } from "../redux/actionProducts";
 import Grid from "@mui/material/Unstable_Grid2";
-import { StarOutline, Add, Remove, Visibility ,ShoppingCart} from "@mui/icons-material";
-import { addToCart } from "../redux/actionCart";
+import {
+  StarOutline,
+  Add,
+  Remove,
+  Visibility,
+  ShoppingCart,
+  Delete,
+} from "@mui/icons-material";
+import { addToCart, minusFromCart } from "../redux/actionCart";
 
 const Product = () => {
+  const [cart, setCart] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams();
   const {
-    products: { productLoading, productData, productError },cart:{ cartLoading, cartData, cartError}
+    products: { productLoading, productData, productError },
+    cart: { cartLoading, cartData, cartError },
   } = useSelector((last) => last);
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(getProduct(id));
   }, []);
-  // console.log({ cartLoading, cartData, cartError});
- 
+  useEffect(() => {
+    const currentData = cartData.filter((item) => item._id == id);
+    currentData ? setCart(currentData) : setCart(null);
+  }, [cartData]);
+
   switch (true) {
     case productLoading:
       return <div>loading...</div>;
@@ -157,11 +169,7 @@ const Product = () => {
                   direction="row"
                   className="mt-5 w-full gap-2 items-center"
                 >
-                  {true ? (
-                    <Button variant="contained" startIcon={<ShoppingCart />} onClick={()=>dispatch(addToCart(item))}>
-                      Add To Cart
-                    </Button>
-                  ) : (
+                  {cart?.length ? (
                     <>
                       <Paper
                         elevation={4}
@@ -173,22 +181,29 @@ const Product = () => {
                           disableRipple
                           disableFocusRipple
                           sx={{ borderRadius: "0", minWidth: 50 }}
+                          onClick={() => dispatch(minusFromCart(item))}
                         >
-                          <Remove sx={{ color: "red" }} />
+                          {cart[0]?.quantity == 1 ? (
+                            <Delete sx={{ color: "red" }} />
+                          ) : (
+                            <Remove sx={{ color: "red" }} />
+                          )}
                         </Button>
                         <Stack>
                           <Typography
                             variant="span"
                             className="w-12 min-h-full font-bold text-center text-lg"
                           >
-                            12
+                            {cart[0]?.quantity}
                           </Typography>
-                          {/* <Typography
-                        variant="span"
-                        className="w-12 min-h-full font-bold text-center text-red-500"
-                      >
-                        max
-                      </Typography> */}
+                          {cart[0].quantity == item.countInStock && (
+                            <Typography
+                              variant="span"
+                              className="w-12 min-h-full font-bold text-center text-red-500"
+                            >
+                              max
+                            </Typography>
+                          )}
                         </Stack>
                         <Button
                           size="large"
@@ -196,6 +211,7 @@ const Product = () => {
                           disableRipple
                           disableFocusRipple
                           sx={{ borderRadius: "0", minWidth: 50 }}
+                          onClick={() => dispatch(addToCart(item))}
                         >
                           <Add />
                         </Button>
@@ -211,6 +227,14 @@ const Product = () => {
                         view Cart
                       </Button>
                     </>
+                  ) : (
+                    <Button
+                      variant="contained"
+                      startIcon={<ShoppingCart />}
+                      onClick={() => dispatch(addToCart(item))}
+                    >
+                      Add To Cart
+                    </Button>
                   )}
                 </Stack>
               </Grid>

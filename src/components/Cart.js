@@ -47,7 +47,7 @@ const Cart = () => {
     default:
       return (
         <>
-          <Box className="">
+          <Box className="overflow-auto  p-1" sx={{maxHeight:{xs:350,md:400}}}>
             <Paper
               elevation={4}
               className=""
@@ -226,7 +226,7 @@ const Cart = () => {
               </Paper>
             ))}
           </Box>
-          <Box className="flex justify-end mt-2">
+          <Box className="flex justify-end mt-2 px-1">
             <Paper
               elevation={3}
               className="flex w-72 gap-2 items-center p-2 font-bold "

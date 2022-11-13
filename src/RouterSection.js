@@ -5,6 +5,7 @@ import Product from "./components/Product";
 import Products from "./components/Products";
 import Cart from "./components/Cart";
 import Login from "./components/Login";
+import Signup from "./components/Signup";
 
 const RouterSection = () => {
   return (
@@ -15,6 +16,7 @@ const RouterSection = () => {
           <Route path="/product/:id" element={<Product />} />
           <Route path="/cart" element={<Cart />} />
           <Route path="/login" element={<Login />} />
+          <Route path="//signup" element={<Signup />} />
         </Route>
       </Routes>
     </Container>

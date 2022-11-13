@@ -7,11 +7,22 @@ import {
 } from "@mui/icons-material";
 
 import { Box, Button, InputAdornment, Paper } from "@mui/material";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { CustomField, HeaderLogin } from "./Login";
 import { useFormik } from "formik";
+import { useSelector, useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { Toast } from "../redux/actionCart";
+import { LoadingButton } from "@mui/lab";
+import { createUser } from "../redux/actionUser";
 
 const Signup = () => {
+  const [status, setStatus] = useState(false);
+  const {
+    user: { userLoading, userData, userError },
+  } = useSelector((last) => last);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
   const validate = (values) => {
     let errors = {};
     if (!values.username) {
@@ -43,10 +54,11 @@ const Signup = () => {
       mobile: "",
     },
     onSubmit: (values) => {
-      console.log(values);
+      dispatch(createUser(values));
+      setStatus(true);
     },
     validate,
-    onReset: (values) => {
+    onReset: () => {
       return {
         username: "",
         password: "",
@@ -55,6 +67,22 @@ const Signup = () => {
       };
     },
   });
+  useEffect(() => {
+    if (status && userError.length) {
+      Toast.fire({
+        icon: "error",
+        title: userError,
+      });
+    }
+    if (status && Object.keys(userData).length) {
+      Toast.fire({
+        icon: "success",
+        title: `${formik.values.username} created successfully`,
+      });
+      navigate("/login");
+    }
+  }, [userError, userData]);
+
   return (
     <Box
       className="flex justify-center items-center font-bold text-2xl"
@@ -166,14 +194,16 @@ const Signup = () => {
             fullWidth
           />
           <Box className="text-center">
-            <Button
+            <LoadingButton
+              loading={userLoading}
+              loadingPosition="start"
               sx={{ minWidth: 120 }}
               variant="contained"
               startIcon={<Portrait />}
               type="submit"
             >
               Signup
-            </Button>
+            </LoadingButton>
           </Box>
         </Box>
       </Paper>

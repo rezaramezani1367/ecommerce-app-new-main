@@ -1,11 +1,9 @@
-import axios from "axios";
+
 import Swal from "sweetalert2";
 import { cartLoading, cartSuccess, cartError } from "./constants";
-const client = axios.create({
-  baseURL: "http://kzico.runflare.run",
-});
 
-const Toast = Swal.mixin({
+
+export const Toast = Swal.mixin({
   toast: true,
   position: "bottom-start",
   showConfirmButton: false,

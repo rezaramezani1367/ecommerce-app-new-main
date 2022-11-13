@@ -5,6 +5,9 @@ import {
   cartLoading,
   cartSuccess,
   cartError,
+  userLoading,
+  userSuccess,
+  userError,
 } from "./constants";
 
 export const products = (
@@ -33,6 +36,22 @@ export const cart = (
     case cartSuccess:
       return payload;
     case cartError:
+      return payload;
+
+    default:
+      return state;
+  }
+};
+export const user = (
+  state = { userLoading: false, userData: {}, userError: "" },
+  { type, payload }
+) => {
+  switch (type) {
+    case userLoading:
+      return payload;
+    case userSuccess:
+      return payload;
+    case userError:
       return payload;
 
     default:

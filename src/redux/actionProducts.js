@@ -1,9 +1,9 @@
-import axios from "axios";
-import { productLoading, productSuccess, productError } from "./constants";
-
-const client = axios.create({
-  baseURL: "http://kzico.runflare.run",
-});
+import {
+  productLoading,
+  productSuccess,
+  productError,
+  client,
+} from "./constants";
 
 export const getAllProducts = () => async (dispatch, getState) => {
   dispatch({

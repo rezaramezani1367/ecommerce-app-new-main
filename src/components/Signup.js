@@ -1,18 +1,60 @@
-import { AccountCircle, Email, Key, LoginOutlined, PhoneAndroid, Portrait } from "@mui/icons-material";
-import { TabContext, TabList, TabPanel } from "@mui/lab";
 import {
-  Box,
-  Button,
-  InputAdornment,
-  Paper,
-  Tab,
-  Tabs,
-  TextField,
-} from "@mui/material";
+  AccountCircle,
+  Email,
+  Key,
+  PhoneAndroid,
+  Portrait,
+} from "@mui/icons-material";
+
+import { Box, Button, InputAdornment, Paper } from "@mui/material";
 import React from "react";
 import { CustomField, HeaderLogin } from "./Login";
+import { useFormik } from "formik";
 
 const Signup = () => {
+  const validate = (values) => {
+    let errors = {};
+    if (!values.username) {
+      errors.username = "Please enter your username";
+    }
+    if (
+      !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(
+        values.password
+      )
+    ) {
+      errors.password = ` The password field has minimum 8 characters, at least one
+      uppercase letter, one lowercase letter, one number and one
+      special character`;
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
+      errors.email = "Please enter your valid email";
+    }
+    if (!/^[0][9][0-9]{9}$/.test(values.mobile)) {
+      errors.mobile = `The mobile field must be number(11character) and started by
+      09 example 09123456789`;
+    }
+    return errors;
+  };
+  const formik = useFormik({
+    initialValues: {
+      username: "",
+      password: "",
+      email: "",
+      mobile: "",
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+    validate,
+    onReset: (values) => {
+      return {
+        username: "",
+        password: "",
+        email: "",
+        mobile: "",
+      };
+    },
+  });
   return (
     <Box
       className="flex justify-center items-center font-bold text-2xl"
@@ -29,11 +71,21 @@ const Signup = () => {
           className="flex flex-col gap-4 p-4"
           noValidate
           autoComplete="off"
+          onSubmit={formik.handleSubmit}
         >
           <CustomField
-            helperText="Please enter your name"
+            error={formik.errors.username && formik.touched.username}
+            helperText={
+              formik.errors.username && formik.touched.username
+                ? formik.errors.username
+                : ""
+            }
             label="Username"
-            id="outlined-username-small"
+            name="username"
+            id="username"
+            autoComplete="username"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -45,9 +97,17 @@ const Signup = () => {
             fullWidth
           />
           <CustomField
+            error={formik.errors.email && formik.touched.email}
+            helperText={
+              formik.errors.email && formik.touched.email
+                ? formik.errors.email
+                : ""
+            }
             label="Email"
-            id="outlined-username-small"
-            // defaultValue="Small"
+            name="email"
+            id="email"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -60,6 +120,12 @@ const Signup = () => {
           />
 
           <CustomField
+            error={formik.errors.password && formik.touched.password}
+            helperText={
+              formik.errors.password && formik.touched.password
+                ? formik.errors.password
+                : ""
+            }
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -68,15 +134,27 @@ const Signup = () => {
               ),
             }}
             label="Password"
-            id="outlined-username-small"
-            // defaultValue="Small"
+            name="password"
+            id="password"
+            autoComplete="current-password"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             size="small"
             fullWidth
             type="password"
-            />
+          />
           <CustomField
+            error={formik.errors.mobile && formik.touched.mobile}
+            helperText={
+              formik.errors.mobile && formik.touched.mobile
+                ? formik.errors.mobile
+                : ""
+            }
             label="Mobile"
-            id="outlined-username-small"
+            name="mobile"
+            id="mobile"
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
@@ -92,6 +170,7 @@ const Signup = () => {
               sx={{ minWidth: 120 }}
               variant="contained"
               startIcon={<Portrait />}
+              type="submit"
             >
               Signup
             </Button>

@@ -1,4 +1,10 @@
-import { LoginOutlined,Login as LoginIcon, Portrait, Key, Email } from "@mui/icons-material";
+import {
+  LoginOutlined,
+  Login as LoginIcon,
+  Portrait,
+  Key,
+  Email,
+} from "@mui/icons-material";
 
 import {
   Box,
@@ -10,23 +16,11 @@ import {
   Tabs,
   TextField,
 } from "@mui/material";
+import { useFormik } from "formik";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 export const CustomField = styled(TextField)(() => ({
-  "& label": {
-    fontWeight: 500,
-    top: 0,
-    left: 0,
-  },
-  "& label.Mui-focused": {
-    top: 0,
-    left: 0,
-  },
-  "& label.MuiFormLabel-filled": {
-    top: 0,
-    left: 0,
-  },
   "& input": {
     padding: "0.75rem 0.5rem",
   },
@@ -34,16 +28,55 @@ export const CustomField = styled(TextField)(() => ({
     "& fieldset": {
       borderColor: "#717D7E",
       borderRadius: "3rem",
-    }
+    },
   },
 }));
 export const HeaderLogin = ({ value }) => {
+  const validate = (values) => {
+    let errors = {};
+    if (!values.password) {
+      errors.password = "Required password";
+    }
+    if (!values.email) {
+      errors.email = "Required email";
+    }
+
+    return errors;
+  };
+  const formik = useFormik({
+    initialValues: {
+      password: "",
+      email: "",
+    },
+    onSubmit: (values) => {
+      alert(JSON.stringify(values, null, 2));
+    },
+    validate,
+    onReset: (values) => {
+      return {
+        password: "",
+        email: "",
+      };
+    },
+  });
   const navigate = useNavigate();
   return (
-    <Box sx={{ borderBottom: 1, borderColor: "divider",overflow:'hidden' }}>
-      <Tabs value={value} aria-label="basic tabs" sx={{bgcolor: ''}}>
-        <Tab icon={<LoginIcon />} iconPosition='start' label="Login" value="1" onClick={() => navigate("/login")} />
-        <Tab icon={<Portrait />}  iconPosition='start' label="Signup" value="2" onClick={() => navigate("/signup")} />
+    <Box sx={{ borderBottom: 1, borderColor: "divider", overflow: "hidden" }}>
+      <Tabs value={value} aria-label="basic tabs" sx={{ bgcolor: "" }}>
+        <Tab
+          icon={<LoginIcon />}
+          iconPosition="start"
+          label="Login"
+          value="1"
+          onClick={() => navigate("/login")}
+        />
+        <Tab
+          icon={<Portrait />}
+          iconPosition="start"
+          label="Signup"
+          value="2"
+          onClick={() => navigate("/signup")}
+        />
       </Tabs>
     </Box>
   );
@@ -67,7 +100,7 @@ const Login = () => {
             <CustomField
               label="Email"
               id="outlined-username-small"
-              // defaultValue="Small"
+              name="username"
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">
@@ -75,23 +108,21 @@ const Login = () => {
                   </InputAdornment>
                 ),
               }}
-
               size="small"
               fullWidth
             />
 
             <CustomField
-            startIcon={<LoginIcon />}
-            InputProps={{
-              startAdornment: (
-                <InputAdornment position="start">
-                  <Key />
-                </InputAdornment>
-              ),
-            }}
+              name="Password"
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <Key />
+                  </InputAdornment>
+                ),
+              }}
               label="Password"
               id="outlined-username-small"
-              // defaultValue="Small"
               size="small"
               fullWidth
               type="password"

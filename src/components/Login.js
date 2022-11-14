@@ -26,12 +26,14 @@ import { loginUser } from "../redux/actionUser";
 export const CustomField = styled(TextField)(() => ({
   "& input": {
     padding: "0.75rem 0.5rem",
+    overflow: "hidden",
   },
   "& .MuiOutlinedInput-root": {
     "& fieldset": {
       borderColor: "#717D7E",
       borderRadius: "3rem",
     },
+    borderRadius: "0 3rem 3rem 0",
   },
 }));
 export const HeaderLogin = ({ value }) => {
@@ -125,7 +127,7 @@ const Login = () => {
         icon: "success",
         title: `${userData.username} login`,
       });
-      return <Navigate to='/'/>
+      return <Navigate to="/" />;
 
     default:
       return (

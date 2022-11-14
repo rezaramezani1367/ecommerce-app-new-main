@@ -90,7 +90,7 @@ export default function Header({ setMode, mode }) {
       <MenuItem
         onClick={() => {
           Toast.fire({
-            title: `${userData.username} loged in successfully`,
+            title: `${userData.username} loged out successfully`,
             icon: "success",
           });
           dispatch(logoutUser());

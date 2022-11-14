@@ -5,7 +5,8 @@ import {
   Key,
   Email,
 } from "@mui/icons-material";
-
+import { LoadingButton } from "@mui/lab";
+import { Toast } from "../redux/actionCart";
 import {
   Box,
   Button,
@@ -17,8 +18,10 @@ import {
   TextField,
 } from "@mui/material";
 import { useFormik } from "formik";
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { Navigate, useNavigate } from "react-router-dom";
+import { loginUser } from "../redux/actionUser";
 
 export const CustomField = styled(TextField)(() => ({
   "& input": {
@@ -32,33 +35,6 @@ export const CustomField = styled(TextField)(() => ({
   },
 }));
 export const HeaderLogin = ({ value }) => {
-  const validate = (values) => {
-    let errors = {};
-    if (!values.password) {
-      errors.password = "Required password";
-    }
-    if (!values.email) {
-      errors.email = "Required email";
-    }
-
-    return errors;
-  };
-  const formik = useFormik({
-    initialValues: {
-      password: "",
-      email: "",
-    },
-    onSubmit: (values) => {
-      alert(JSON.stringify(values, null, 2));
-    },
-    validate,
-    onReset: (values) => {
-      return {
-        password: "",
-        email: "",
-      };
-    },
-  });
   const navigate = useNavigate();
   return (
     <Box sx={{ borderBottom: 1, borderColor: "divider", overflow: "hidden" }}>
@@ -82,66 +58,159 @@ export const HeaderLogin = ({ value }) => {
   );
 };
 const Login = () => {
-  return (
-    <>
-      <Box className="flex justify-center items-center">
-        <Paper
-          className=" w-full md:w-150 overflow-hidden"
-          sx={{ borderRadius: "1.8rem" }}
-          elevation={4}
-        >
-          <HeaderLogin value="1" />
-          <Box
-            component="form"
-            className="flex flex-col gap-4 p-4"
-            noValidate
-            autoComplete="off"
-          >
-            <CustomField
-              label="Email"
-              id="outlined-username-small"
-              name="username"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Email />
-                  </InputAdornment>
-                ),
-              }}
-              size="small"
-              fullWidth
-            />
+  const [status, setStatus] = useState(false);
+  const {
+    user: { userLoading, userData, userError },
+  } = useSelector((last) => last);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const validate = (values) => {
+    let errors = {};
 
-            <CustomField
-              name="Password"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <Key />
-                  </InputAdornment>
-                ),
-              }}
-              label="Password"
-              id="outlined-username-small"
-              size="small"
-              fullWidth
-              type="password"
-            />
+    if (
+      !(
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email) ||
+        values.email.length >= 5
+      )
+    ) {
+      errors.email = "Please enter your valid email or username";
+    }
+    if (
+      !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(
+        values.password
+      )
+    ) {
+      errors.password = `password must be at least 8 characters, at least one
+      uppercase letter, one lowercase letter, one number and one
+      special character`;
+    }
 
-            <Box className="text-center">
-              <Button
-                sx={{ minWidth: 120 }}
-                variant="contained"
-                startIcon={<LoginOutlined />}
+    return errors;
+  };
+  const formik = useFormik({
+    initialValues: {
+      password: "",
+      email: "",
+    },
+    onSubmit: (values) => {
+      dispatch(loginUser(values));
+      setStatus(true);
+    },
+    validate,
+    onReset: (values) => {
+      return {
+        password: "",
+        email: "",
+      };
+    },
+  });
+  useEffect(() => {
+    if (status && userError.length) {
+      Toast.fire({
+        icon: "error",
+        title: userError,
+      });
+    }
+    if (status && Object.keys(userData).length) {
+      Toast.fire({
+        icon: "success",
+        title: `${userData.username} loged in successfully`,
+      });
+      navigate("/");
+    }
+  }, [userError, userData]);
+  switch (true) {
+    case Boolean(userData.username):
+      Toast.fire({
+        icon: "success",
+        title: `${userData.username} login`,
+      });
+      return <Navigate to='/'/>
+
+    default:
+      return (
+        <>
+          <Box className="flex justify-center items-center">
+            <Paper
+              className=" w-full md:w-150 overflow-hidden"
+              sx={{ borderRadius: "1.8rem" }}
+              elevation={4}
+            >
+              <HeaderLogin value="1" />
+              <Box
+                component="form"
+                className="flex flex-col gap-4 p-4"
+                noValidate
+                autoComplete="off"
+                onSubmit={formik.handleSubmit}
               >
-                Login
-              </Button>
-            </Box>
+                <CustomField
+                  error={formik.errors.email && formik.touched.email}
+                  helperText={
+                    formik.errors.email && formik.touched.email
+                      ? formik.errors.email
+                      : ""
+                  }
+                  label="Email"
+                  name="email"
+                  id="email"
+                  autoComplete="username"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Email />
+                      </InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                  fullWidth
+                />
+
+                <CustomField
+                  error={formik.errors.password && formik.touched.password}
+                  helperText={
+                    formik.errors.password && formik.touched.password
+                      ? formik.errors.password
+                      : ""
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <Key />
+                      </InputAdornment>
+                    ),
+                  }}
+                  label="Password"
+                  name="password"
+                  id="password"
+                  autoComplete="current-password"
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  size="small"
+                  fullWidth
+                  type="password"
+                />
+
+                <Box className="text-center">
+                  <LoadingButton
+                    loading={userLoading}
+                    loadingPosition="start"
+                    sx={{ minWidth: 120 }}
+                    variant="contained"
+                    startIcon={<LoginOutlined />}
+                    type="submit"
+                  >
+                    Login
+                  </LoadingButton>
+                </Box>
+              </Box>
+            </Paper>
           </Box>
-        </Paper>
-      </Box>
-    </>
-  );
+        </>
+      );
+  }
 };
 
 export default Login;

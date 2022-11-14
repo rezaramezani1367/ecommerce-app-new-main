@@ -27,6 +27,8 @@ import {
   Logout,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
+import { logoutUser } from "../redux/actionUser";
+import { Toast } from "../redux/actionCart";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
   "& .MuiBadge-badge": {
@@ -37,9 +39,11 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
   },
 }));
 export default function Header({ setMode, mode }) {
+  const dispatch = useDispatch();
   const [countCard, setCountCard] = React.useState(0);
   const {
     cart: { cartLoading, cartData, cartError },
+    user: { userLoading, userData, userError },
   } = useSelector((last) => last);
   React.useEffect(() => {
     let result = 0;
@@ -70,7 +74,7 @@ export default function Header({ setMode, mode }) {
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 40,
-        horizontal:30,
+        horizontal: 30,
       }}
       id={menuId}
       keepMounted
@@ -83,7 +87,19 @@ export default function Header({ setMode, mode }) {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
-      <MenuItem onClick={handleMenuClose} sx={{justifyContent:'center'}}><Logout /></MenuItem>
+      <MenuItem
+        onClick={() => {
+          Toast.fire({
+            title: `${userData.username} loged in successfully`,
+            icon: "success",
+          });
+          dispatch(logoutUser());
+          handleMenuClose();
+        }}
+        sx={{ justifyContent: "center" }}
+      >
+        <Logout />
+      </MenuItem>
     </Menu>
   );
 
@@ -126,13 +142,7 @@ export default function Header({ setMode, mode }) {
                 </StyledBadge>
               </IconButton>
             </NavLink>
-            {true ? (
-              <NavLink to="/login">
-                <IconButton size="large" edge="end" color="inherit">
-                  <Login />
-                </IconButton>
-              </NavLink>
-            ) : (
+            {userData.username ? (
               <IconButton
                 size="large"
                 edge="end"
@@ -144,6 +154,12 @@ export default function Header({ setMode, mode }) {
               >
                 <AccountCircle />
               </IconButton>
+            ) : (
+              <NavLink to="/login">
+                <IconButton size="large" edge="end" color="inherit">
+                  <Login />
+                </IconButton>
+              </NavLink>
             )}
           </Box>
         </Toolbar>

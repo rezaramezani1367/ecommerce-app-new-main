@@ -2,9 +2,11 @@ import { legacy_createStore as createStore,applyMiddleware,combineReducers  } fr
 import thunk from "redux-thunk";
 import { products,cart,user } from "./reducer";
 
-const newCart=localStorage.getItem('cart')?JSON.parse(localStorage.getItem('cart')):[];
+const currentCart=localStorage.getItem('cart')?JSON.parse(localStorage.getItem('cart')):[];
+const currentuser=localStorage.getItem('user')?JSON.parse(localStorage.getItem('user')):{};
 const initialState={
-    cart:{ cartLoading: false, cartData: [...newCart], cartError: ""}
+    cart:{ cartLoading: false, cartData: [...currentCart], cartError: ""},
+    user:{ userLoading: false, userData: {...currentuser}, userError: ""},
 };
 const middleWare=[thunk];
 const reducers=combineReducers({products,cart,user});

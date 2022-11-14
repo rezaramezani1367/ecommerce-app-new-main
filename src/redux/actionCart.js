@@ -1,13 +1,11 @@
-
 import Swal from "sweetalert2";
 import { cartLoading, cartSuccess, cartError } from "./constants";
-
 
 export const Toast = Swal.mixin({
   toast: true,
   position: "bottom-start",
   showConfirmButton: false,
-  timer: 1500,
+  timer: 2000,
 
   timerProgressBar: true,
   didOpen: (toast) => {
@@ -17,7 +15,6 @@ export const Toast = Swal.mixin({
 });
 
 export const addToCart = (item) => (dispatch, getState) => {
-  console.log(item);
   dispatch({
     type: cartLoading,
     payload: { ...getState().cart, cartLoading: true },

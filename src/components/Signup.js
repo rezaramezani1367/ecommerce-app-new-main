@@ -37,6 +37,9 @@ const Signup = () => {
       uppercase letter, one lowercase letter, one number and one
       special character`;
     }
+    if (values.password!==values.confrimPassword) {
+      errors.confrimPassword = "Password not matched";
+    }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
       errors.email = "Please enter your valid email";
     }
@@ -62,6 +65,7 @@ const Signup = () => {
       return {
         username: "",
         password: "",
+        confrimPassword:"",
         email: "",
         mobile: "",
       };
@@ -174,6 +178,31 @@ const Signup = () => {
                 name="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={formik.handleChange}
+                onBlur={formik.handleBlur}
+                size="small"
+                fullWidth
+                type="password"
+              />
+              <CustomField
+                error={formik.errors.confrimPassword && formik.touched.confrimPassword}
+                helperText={
+                  formik.errors.confrimPassword && formik.touched.confrimPassword
+                    ? formik.errors.confrimPassword
+                    : ""
+                }
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <Key />
+                    </InputAdornment>
+                  ),
+                }}
+                label="Confrim Password"
+                name="confrimPassword"
+                id="confrimPassword"
+               
+                
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 size="small"

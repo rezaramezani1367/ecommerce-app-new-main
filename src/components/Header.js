@@ -12,6 +12,7 @@ import {
   Menu,
   styled,
   Container,
+  ListItemIcon,
 } from "@mui/material";
 
 import {
@@ -25,6 +26,8 @@ import {
   Home,
   Login,
   Logout,
+  Grading,
+  Settings,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/actionUser";
@@ -73,8 +76,8 @@ export default function Header({ setMode, mode }) {
     <Menu
       anchorEl={anchorEl}
       anchorOrigin={{
-        vertical: 40,
-        horizontal: 30,
+        vertical: 35,
+        horizontal:42
       }}
       id={menuId}
       keepMounted
@@ -84,9 +87,51 @@ export default function Header({ setMode, mode }) {
       }}
       open={isMenuOpen}
       onClose={handleMenuClose}
+      PaperProps={{
+        elevation: 0,
+        sx: {
+          overflow: 'visible',
+          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+          mt: 1.5,
+          '& .MuiAvatar-root': {
+            width: 32,
+            height: 32,
+            ml: -0.5,
+            mr: 1,
+          },
+          '&:before': {
+            content: '""',
+            display: 'block',
+            position: 'absolute',
+            top: 0,
+            right: 14,
+            width: 10,
+            height: 10,
+            bgcolor: 'background.paper',
+            transform: 'translateY(-50%) rotate(45deg)',
+            zIndex: 0,
+          },
+        },
+      }}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
-      <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <ListItemIcon>
+          <AccountCircle fontSize="small" />
+        </ListItemIcon>
+        Profile
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <ListItemIcon>
+          <Grading fontSize="small" />
+        </ListItemIcon>
+        Orders
+      </MenuItem>
+      <MenuItem onClick={handleMenuClose}>
+        <ListItemIcon>
+          <Settings fontSize="small" />
+        </ListItemIcon>
+        Setting
+      </MenuItem>
       <MenuItem
         onClick={() => {
           Toast.fire({
@@ -96,9 +141,11 @@ export default function Header({ setMode, mode }) {
           dispatch(logoutUser());
           handleMenuClose();
         }}
-        sx={{ justifyContent: "center" }}
       >
-        <Logout />
+        <ListItemIcon>
+          <Logout fontSize="small" />
+        </ListItemIcon>
+        Exit
       </MenuItem>
     </Menu>
   );

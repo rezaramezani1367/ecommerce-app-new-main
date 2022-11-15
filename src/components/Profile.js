@@ -1,10 +1,16 @@
-import { Avatar, Box, Paper, Tab, Tabs } from "@mui/material";
+import { Avatar, Box, Paper, Tab, Tabs, useMediaQuery } from "@mui/material";
 import { grey, pink } from "@mui/material/colors";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { getProfile } from "../redux/actionUser";
 import { Navigate, useNavigate } from "react-router-dom";
-import { AccountBox, Key, Login, ManageAccounts, Portrait } from "@mui/icons-material";
+import {
+  AccountBox,
+  Key,
+  Login,
+  ManageAccounts,
+  Portrait,
+} from "@mui/icons-material";
 const Profile = () => {
   const {
     user: { userLoading, userData, userError },
@@ -13,13 +19,16 @@ const Profile = () => {
   useEffect(() => {
     dispatch(getProfile(userData));
   }, []);
-  console.log(userData);
+  const mediumViewport = useMediaQuery("(min-width:700px)");
   return (
     <>
       <Box className="">
-        <Box className=" w-full  flex gap-2">
+        <Box
+          flexDirection={mediumViewport ? "row" : "column"}
+          sx={{ width: "100%", display: "flex", gap: 2 }}
+        >
           <Box>
-          <HeaderProfile value="1" />
+            <HeaderProfile value="1" />
           </Box>
           <Paper elevation={4} className="flex-1">
             <Avatar
@@ -85,14 +94,16 @@ const Profile = () => {
 };
 export const HeaderProfile = ({ value }) => {
   const navigate = useNavigate();
+  const mediumViewport = useMediaQuery("(min-width:700px)");
   return (
     <Paper elevation={3} className="sticky top-20">
       <Tabs
-        orientation="vertical"
+        orientation={mediumViewport ? "vertical" : "horizontal"}
+        scrollButtons="auto"
+        allowScrollButtonsMobile
         variant="scrollable"
         value={value}
         aria-label="basic tabs"
-        // sx={{orientation:{xs:'horizontal',md:'vertical'}}}
       >
         <Tab
           icon={<AccountBox />}

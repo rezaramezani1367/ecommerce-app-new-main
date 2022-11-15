@@ -132,7 +132,12 @@ export default function Header({ setMode, mode }) {
         </ListItemIcon>
         Orders
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/profile/change");
+        }}
+      >
         <ListItemIcon>
           <Settings fontSize="small" />
         </ListItemIcon>
@@ -170,7 +175,7 @@ export default function Header({ setMode, mode }) {
               <Home />
             </IconButton>
           </NavLink>
-          <NavLink to="/" sx={{}}>
+          <NavLink to="/">
             <Typography variant="h6" noWrap component="span">
               Home
             </Typography>

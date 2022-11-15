@@ -1,11 +1,12 @@
-import { Box, Paper } from "@mui/material";
+import { Box, Paper, useMediaQuery } from "@mui/material";
 import React from "react";
 import { HeaderProfile } from "./Profile";
 
 const ChangeProfile = () => {
+  const mediumViewport = useMediaQuery('(min-width:700px)');
   return (
     <>
-      <Box className=" w-full  flex gap-2">
+      <Box flexDirection={mediumViewport ? "row" : "column"} sx={{width:'100%',display:'flex',gap:2}}>
         <Box>
           <HeaderProfile value="2" />
         </Box>

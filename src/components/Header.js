@@ -1,5 +1,5 @@
 import * as React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   AppBar,
   Box,
@@ -43,6 +43,7 @@ const StyledBadge = styled(Badge)(({ theme }) => ({
 }));
 export default function Header({ setMode, mode }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [countCard, setCountCard] = React.useState(0);
   const {
     cart: { cartLoading, cartData, cartError },
@@ -77,7 +78,7 @@ export default function Header({ setMode, mode }) {
       anchorEl={anchorEl}
       anchorOrigin={{
         vertical: 35,
-        horizontal:42
+        horizontal: 42,
       }}
       id={menuId}
       keepMounted
@@ -90,31 +91,36 @@ export default function Header({ setMode, mode }) {
       PaperProps={{
         elevation: 0,
         sx: {
-          overflow: 'visible',
-          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+          overflow: "visible",
+          filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
           mt: 1.5,
-          '& .MuiAvatar-root': {
+          "& .MuiAvatar-root": {
             width: 32,
             height: 32,
             ml: -0.5,
             mr: 1,
           },
-          '&:before': {
+          "&:before": {
             content: '""',
-            display: 'block',
-            position: 'absolute',
+            display: "block",
+            position: "absolute",
             top: 0,
             right: 14,
             width: 10,
             height: 10,
-            bgcolor: 'background.paper',
-            transform: 'translateY(-50%) rotate(45deg)',
+            bgcolor: "background.paper",
+            transform: "translateY(-50%) rotate(45deg)",
             zIndex: 0,
           },
         },
       }}
     >
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem
+        onClick={() => {
+          handleMenuClose();
+          navigate("/profile");
+        }}
+      >
         <ListItemIcon>
           <AccountCircle fontSize="small" />
         </ListItemIcon>

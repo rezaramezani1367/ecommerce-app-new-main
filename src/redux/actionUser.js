@@ -82,3 +82,33 @@ export const logoutUser = () => async (dispatch, getState) => {
     });
   }
 };
+export const getProfile = (values) => async (dispatch, getState) => {
+  dispatch({
+    type: userLoading,
+    payload: { ...getState().user, userLoading: true },
+  });
+  try {
+    const { data } = await client.get("/user/profile/", {
+      headers: {
+        authorization:
+          `Bearer ${values.token}`,
+      }});
+    dispatch({
+      type: userSuccess,
+      payload: {
+        userLoading: false,
+        userData: data.user,
+        userError: "",
+      },
+    });
+  } catch (error) {
+    dispatch({
+      type: userError,
+      payload: {
+        userLoading: false,
+        userData: {},
+        userError: error.response ? error.response.data.message : error.message,
+      },
+    });
+  }
+};

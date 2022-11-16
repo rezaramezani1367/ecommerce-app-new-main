@@ -22,8 +22,8 @@ export const createUser = (values) => async (dispatch, getState) => {
     dispatch({
       type: userError,
       payload: {
+        ...getState().user,
         userLoading: false,
-        userData: {},
         userError: error.response ? error.response.data.message : error.message,
       },
     });
@@ -49,8 +49,8 @@ export const loginUser = (values) => async (dispatch, getState) => {
     dispatch({
       type: userError,
       payload: {
+        ...getState().user,
         userLoading: false,
-        userData: {},
         userError: error.response ? error.response.data.message : error.message,
       },
     });
@@ -75,8 +75,8 @@ export const logoutUser = () => async (dispatch, getState) => {
     dispatch({
       type: userError,
       payload: {
+        ...getState().user,
         userLoading: false,
-        userData: {},
         userError: error.response ? error.response.data.message : error.message,
       },
     });
@@ -90,9 +90,9 @@ export const getProfile = (values) => async (dispatch, getState) => {
   try {
     const { data } = await client.get("/user/profile/", {
       headers: {
-        authorization:
-          `Bearer ${values.token}`,
-      }});
+        authorization: `Bearer ${values.token}`,
+      },
+    });
     dispatch({
       type: userSuccess,
       payload: {
@@ -105,8 +105,48 @@ export const getProfile = (values) => async (dispatch, getState) => {
     dispatch({
       type: userError,
       payload: {
+        ...getState().user,
         userLoading: false,
-        userData: {},
+        userError: error.response ? error.response.data.message : error.message,
+      },
+    });
+  }
+};
+export const changeProfile = (values) => async (dispatch, getState) => {
+  dispatch({
+    type: userLoading,
+    payload: { ...getState().user, userLoading: true },
+  });
+  try {
+    const data = await client.put(
+      "/user/change-profile",
+      {
+        ...values,
+        age: Number(values.age),
+      },
+      {
+        headers: {
+          authorization: `Bearer ${values.token}`,
+        },
+      }
+    );
+    console.log(data);
+    dispatch({
+      type: userSuccess,
+      payload: {
+        userData:{...values},
+        userLoading: false,
+        userError: "",
+      },
+    });
+    console.log(getState().user)
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: userError,
+      payload: {
+        ...getState().user,
+        userLoading: false,
         userError: error.response ? error.response.data.message : error.message,
       },
     });

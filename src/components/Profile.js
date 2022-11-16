@@ -27,7 +27,7 @@ const Profile = () => {
   useEffect(() => {
     dispatch(getProfile(userData));
   }, []);
-  console.log(userData);
+
   return (
     <HeaderProfile value="1">
       <Box
@@ -51,20 +51,30 @@ const Profile = () => {
           />
         </Box>
         <Box
-          className="flex-1"
           sx={{
             display: "grid",
-            gap: 2,
-            gridTemplateColumns: "110px 1fr",
+            flexGrow: 1,
+            gap: 3,
+            gridTemplateColumns: { xs: "100px 1fr", lg: "100px 1fr 100px 1fr" },
             alignItems: "center",
           }}
         >
-          <Box className="border-r font-bold capitalize">username</Box>
+          <Box className="border-r font-bold capitalize">user name</Box>
           <Box>{userData.username}</Box>
           <Box className="border-r font-bold capitalize">email</Box>
           <Box>{userData.email}</Box>
           <Box className="border-r font-bold capitalize">mobile</Box>
           <Box>{userData.mobile}</Box>
+          <Box className="border-r font-bold capitalize">first name</Box>
+          <Box>{userData.firstname}</Box>
+          <Box className="border-r font-bold capitalize">last name</Box>
+          <Box>{userData.lastname}</Box>
+          <Box className="border-r font-bold capitalize">gender</Box>
+          <Box>{userData.gender}</Box>
+          <Box className="border-r font-bold capitalize">age</Box>
+          <Box>{userData.age}</Box>
+          <Box className="border-r font-bold capitalize">city</Box>
+          <Box>{userData.city}</Box>
         </Box>
       </Box>
     </HeaderProfile>

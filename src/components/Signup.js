@@ -37,7 +37,9 @@ const Signup = () => {
       uppercase letter, one lowercase letter, one number and one
       special character`;
     }
-    if (values.password!==values.confrimPassword) {
+    if (
+      !(values.password === values.confrimPassword && values.confrimPassword)
+    ) {
       errors.confrimPassword = "Password not matched";
     }
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(values.email)) {
@@ -53,6 +55,7 @@ const Signup = () => {
     initialValues: {
       username: "",
       password: "",
+      confrimPassword: "",
       email: "",
       mobile: "",
     },
@@ -65,7 +68,7 @@ const Signup = () => {
       return {
         username: "",
         password: "",
-        confrimPassword:"",
+        confrimPassword: "",
         email: "",
         mobile: "",
       };
@@ -185,9 +188,13 @@ const Signup = () => {
                 type="password"
               />
               <CustomField
-                error={formik.errors.confrimPassword && formik.touched.confrimPassword}
+                error={
+                  formik.errors.confrimPassword &&
+                  formik.touched.confrimPassword
+                }
                 helperText={
-                  formik.errors.confrimPassword && formik.touched.confrimPassword
+                  formik.errors.confrimPassword &&
+                  formik.touched.confrimPassword
                     ? formik.errors.confrimPassword
                     : ""
                 }
@@ -201,8 +208,6 @@ const Signup = () => {
                 label="Confrim Password"
                 name="confrimPassword"
                 id="confrimPassword"
-               
-                
                 onChange={formik.handleChange}
                 onBlur={formik.handleBlur}
                 size="small"

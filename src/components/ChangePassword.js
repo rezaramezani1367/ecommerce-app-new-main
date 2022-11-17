@@ -7,11 +7,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { Toast } from "../redux/actionCart";
 import { LoadingButton } from "@mui/lab";
-import { createUser } from "../redux/actionUser";
+import { ChangePasswordUser } from "../redux/actionUser";
 import { Key, Person } from "@mui/icons-material";
 
 const ChangePassword = () => {
-  const [status, setStatus] = useState(false);
   const {
     user: { userLoading, userData, userError },
   } = useSelector((last) => last);
@@ -22,66 +21,56 @@ const ChangePassword = () => {
 
     if (
       !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(
-        values.oldPassword
+        values.old_password
       )
     ) {
-      errors.oldPassword = `password must be at least 8 characters, at least one
+      errors.old_password = `password must be at least 8 characters, at least one
       uppercase letter, one lowercase letter, one number and one
       special character`;
     }
     if (
       !/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(
-        values.newPassword
+        values.new_password
       )
     ) {
-      errors.newPassword = `new password must be at least 8 characters, at least one
+      errors.new_password = `new password must be at least 8 characters, at least one
       uppercase letter, one lowercase letter, one number and one
       special character`;
     }
-    if (!(values.newPassword === values.confrimNewPassword && values.confrimNewPassword)) {
-      errors.confrimNewPassword = "new Password not matched";
+    if (
+      !(
+        values.new_password === values.confrim_new_password &&
+        values.confrim_new_password
+      )
+    ) {
+      errors.confrim_new_password = "new Password not matched";
     }
 
     return errors;
   };
   const formik = useFormik({
     initialValues: {
-      oldPassword: "",
-      newPassword: "",
-      confrimNewPassword: "",
+      old_password: "",
+      new_password: "",
+      confrim_new_password: "",
     },
     onSubmit: (values) => {
-      dispatch(createUser(values));
-      setStatus(true);
+      dispatch(ChangePasswordUser({ ...values, ...userData }));
     },
     validate,
     onReset: () => {
       return {
-        oldPassword: "",
-        newPassword: "",
-        confrimNewPassword: "",
+        old_password: "",
+        new_password: "",
+        confrim_new_password: "",
       };
     },
   });
-  useEffect(() => {
-    if (status && userError.length) {
-      Toast.fire({
-        icon: "error",
-        title: userError,
-      });
-    }
-    if (status && Object.keys(userData).length) {
-      Toast.fire({
-        icon: "success",
-        title: `${formik.values.username} created successfully`,
-      });
-      navigate("/login");
-    }
-  }, [userError, userData]);
-  const mediumViewport = useMediaQuery("(min-width:700px)");
+
   return (
     <HeaderProfile value="3">
-      <Box component="form"  onSubmit={formik.handleSubmit}>
+      <Box component="form" onSubmit={formik.handleSubmit}>
+        <input hidden autoComplete="username" />
         <Box
           padding={3}
           sx={{
@@ -89,14 +78,13 @@ const ChangePassword = () => {
             flexGrow: 1,
             gap: 3,
             gridTemplateColumns: { xs: "1fr", md: "repeat(2,1fr)" },
-            
           }}
         >
           <CustomField
-            error={formik.errors.oldPassword && formik.touched.oldPassword}
+            error={formik.errors.old_password && formik.touched.old_password}
             helperText={
-              formik.errors.oldPassword && formik.touched.oldPassword
-                ? formik.errors.oldPassword
+              formik.errors.old_password && formik.touched.old_password
+                ? formik.errors.old_password
                 : ""
             }
             InputProps={{
@@ -107,8 +95,8 @@ const ChangePassword = () => {
               ),
             }}
             label="Old Password"
-            name="oldPassword"
-            id="oldPassword"
+            name="old_password"
+            id="old_password"
             autoComplete="current-password"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
@@ -117,12 +105,10 @@ const ChangePassword = () => {
             type="password"
           />
           <CustomField
-            error={
-              formik.errors.newPassword && formik.touched.newPassword
-            }
+            error={formik.errors.new_password && formik.touched.new_password}
             helperText={
-              formik.errors.newPassword && formik.touched.newPassword
-                ? formik.errors.newPassword
+              formik.errors.new_password && formik.touched.new_password
+                ? formik.errors.new_password
                 : ""
             }
             InputProps={{
@@ -132,10 +118,10 @@ const ChangePassword = () => {
                 </InputAdornment>
               ),
             }}
-            autoComplete='new-password'
+            autoComplete="new-password"
             label="New Password"
-            name="newPassword"
-            id="newPassword"
+            name="new_password"
+            id="new_password"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             size="small"
@@ -144,11 +130,13 @@ const ChangePassword = () => {
           />
           <CustomField
             error={
-              formik.errors.confrimNewPassword && formik.touched.confrimNewPassword
+              formik.errors.confrim_new_password &&
+              formik.touched.confrim_new_password
             }
             helperText={
-              formik.errors.confrimNewPassword && formik.touched.confrimNewPassword
-                ? formik.errors.confrimNewPassword
+              formik.errors.confrim_new_password &&
+              formik.touched.confrim_new_password
+                ? formik.errors.confrim_new_password
                 : ""
             }
             InputProps={{
@@ -158,10 +146,10 @@ const ChangePassword = () => {
                 </InputAdornment>
               ),
             }}
-            autoComplete='new-password'
+            autoComplete="new-password"
             label="Confrim New Password"
-            name="confrimNewPassword"
-            id="confrimNewPassword"
+            name="confrim_new_password"
+            id="confrim_new_password"
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
             size="small"

@@ -1,3 +1,4 @@
+import { Toast } from "./actionCart";
 import { userLoading, userSuccess, userError, client } from "./constants";
 
 export const createUser = (values) => async (dispatch, getState) => {
@@ -134,14 +135,13 @@ export const changeProfile = (values) => async (dispatch, getState) => {
     dispatch({
       type: userSuccess,
       payload: {
-        userData:{...values},
+        userData: { ...values },
         userLoading: false,
         userError: "",
       },
     });
-    console.log(getState().user)
+    console.log(getState().user);
   } catch (error) {
-    console.log(error);
     dispatch({
       type: userError,
       payload: {
@@ -149,6 +149,56 @@ export const changeProfile = (values) => async (dispatch, getState) => {
         userLoading: false,
         userError: error.response ? error.response.data.message : error.message,
       },
+    });
+  }
+};
+export const ChangePasswordUser = (values) => async (dispatch, getState) => {
+  dispatch({
+    type: userLoading,
+    payload: { ...getState().user, userLoading: true },
+  });
+  try {
+    const data = await client.put(
+      "/user/change-password",
+      {
+        ...values,
+      },
+      {
+        headers: {
+          authorization: `Bearer ${values.token}`,
+        },
+      }
+    );
+    console.log(data);
+    dispatch({
+      type: userSuccess,
+      payload: {
+        ...getState().user,
+        userLoading: false,
+        userError: "",
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: `${values.username} change password successfully`,
+    });
+    console.log(getState().user);
+  } catch (error) {
+    console.log(error);
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+    dispatch({
+      type: userError,
+      payload: {
+        ...getState().user,
+        userLoading: false,
+        userError: errorMessage,
+      },
+    });
+    Toast.fire({
+      icon: "error",
+      title: errorMessage,
     });
   }
 };

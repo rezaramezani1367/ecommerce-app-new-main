@@ -25,8 +25,8 @@ export const getAllProducts = () => async (dispatch, getState) => {
     dispatch({
       type: productError,
       payload: {
+        ...getState().products,
         productLoading: false,
-        productData: [],
         productError: error.message,
       },
     });
@@ -47,8 +47,8 @@ export const getProduct = (id) => async (dispatch, getState) => {
     dispatch({
       type: productError,
       payload: {
+        ...getState().products,
         productLoading: false,
-        productData: [],
         productError: error.message,
       },
     });

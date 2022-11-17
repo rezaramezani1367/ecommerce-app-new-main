@@ -112,7 +112,7 @@ const Login = () => {
         title: userError,
       });
     }
-    if (status && Object.keys(userData).length) {
+    else if (status && Object.keys(userData).length) {
       Toast.fire({
         icon: "success",
         title: `${userData.username} loged in successfully`,

@@ -81,7 +81,7 @@ const Signup = () => {
         title: userError,
       });
     }
-    if (status && Object.keys(userData).length) {
+    else if  (status && Object.keys(userData).length) {
       Toast.fire({
         icon: "success",
         title: `${formik.values.username} created successfully`,

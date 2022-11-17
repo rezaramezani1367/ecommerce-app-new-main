@@ -67,7 +67,7 @@ const ChangeProfile = () => {
         title: userError,
       });
     }
-    if (status && Object.keys(userData).length) {
+    else if  (status && Object.keys(userData).length) {
       Toast.fire({
         icon: "success",
         title: `${userData.username} created successfully`,
@@ -86,7 +86,6 @@ const ChangeProfile = () => {
             flexGrow: 1,
             gap: 3,
             gridTemplateColumns: { xs: "1fr", md: "repeat(2,1fr)" },
-            alignItems: "center",
           }}
         >
           <CustomField

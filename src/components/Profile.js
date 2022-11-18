@@ -27,7 +27,7 @@ const Profile = () => {
   useEffect(() => {
     dispatch(getProfile(userData));
   }, []);
-  console.log(userData);
+
   return (
     <HeaderProfile value="1">
       <Box

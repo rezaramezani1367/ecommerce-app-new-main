@@ -30,7 +30,7 @@ import {
   Settings,
 } from "@mui/icons-material";
 import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../redux/actionUser";
+import { getProfile, logoutUser } from "../redux/actionUser";
 import { Toast } from "../redux/actionCart";
 
 const StyledBadge = styled(Badge)(({ theme }) => ({
@@ -56,6 +56,20 @@ export default function Header({ setMode, mode }) {
     });
     setCountCard(result);
   }, [cartData]);
+  React.useEffect(() => {
+    // validation token
+    dispatch(getProfile(userData));
+  }, []);
+  React.useEffect(() => {
+     // validation token when faild
+    if (userError === "invalid signature") {
+      dispatch(logoutUser());
+      Toast.fire({
+        title: `Please login again`,
+        icon: "success",
+      });
+    }
+  }, [, userError]);
   const toggleColorMode = () => {
     setMode((prevMode) => (prevMode === "light" ? "dark" : "light"));
   };

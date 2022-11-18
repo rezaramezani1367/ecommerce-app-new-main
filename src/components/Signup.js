@@ -75,26 +75,16 @@ const Signup = () => {
     },
   });
   useEffect(() => {
-    if (status && userError.length) {
-      Toast.fire({
-        icon: "error",
-        title: userError,
-      });
-    }
-    else if  (status && Object.keys(userData).length) {
-      Toast.fire({
-        icon: "success",
-        title: `${formik.values.username} created successfully`,
-      });
+    if (status && userData.IsSuccessSignup) {
       navigate("/login");
     }
-  }, [userError, userData]);
+  }, [userData, status]);
 
   switch (true) {
     case Boolean(userData.username):
       Toast.fire({
         icon: "success",
-        title: `${userData.username} login`,
+        title: `${userData.username} login successfully`,
       });
       return <Navigate to="/" />;
 

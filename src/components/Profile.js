@@ -27,7 +27,7 @@ const Profile = () => {
   useEffect(() => {
     dispatch(getProfile(userData));
   }, []);
-console.log(userData)
+  console.log(userData);
   return (
     <HeaderProfile value="1">
       <Box
@@ -81,63 +81,72 @@ console.log(userData)
   );
 };
 export const HeaderProfile = ({ value, children }) => {
+  const {
+    user: { userLoading, userData, userError },
+  } = useSelector((last) => last);
   const navigate = useNavigate();
   const mediumViewport = useMediaQuery("(min-width:700px)");
-  return (
-    <Box
-      flexDirection={mediumViewport ? "row" : "column"}
-      sx={{ width: "100%", display: "flex", gap: 2 }}
-    >
-      <Box>
-        <Paper elevation={3} className="sticky top-20">
-          <Tabs
-            orientation={mediumViewport ? "vertical" : "horizontal"}
-            scrollButtons="auto"
-            allowScrollButtonsMobile
-            variant="scrollable"
-            value={value}
-            aria-label="basic tabs"
-          >
-            <Tab
-              icon={<AccountBox />}
-              iconPosition={mediumViewport ? "top" : "start"}
-              sx={{ textTransform: "capitalize" }}
-              label="Profile"
-              value="1"
-              onClick={() => navigate("/profile")}
-            />
-            <Tab
-              icon={<ManageAccounts />}
-              iconPosition={mediumViewport ? "top" : "start"}
-              sx={{ textTransform: "capitalize" }}
-              label="Change Profile"
-              value="2"
-              onClick={() => navigate("/profile/change")}
-            />
-            <Tab
-              icon={<Key />}
-              iconPosition={mediumViewport ? "top" : "start"}
-              sx={{ textTransform: "capitalize" }}
-              label="Change Password"
-              value="3"
-              onClick={() => navigate("/profile/password")}
-            />
+  switch (true) {
+    case !Boolean(userData.username):
+      return <Navigate to="/login" />;
 
-            <Tab
-              icon={<Portrait />}
-              iconPosition={mediumViewport ? "top" : "start"}
-              sx={{ textTransform: "capitalize" }}
-              label="Upload Image"
-              value="4"
-              onClick={() => navigate("/profile/avatar")}
-            />
-          </Tabs>
-        </Paper>
-      </Box>
-      <Paper elevation={4} className="flex-1 p-4">
-        {children}
-      </Paper>
-    </Box>
-  );
+    default:
+      return (
+        <Box
+          flexDirection={mediumViewport ? "row" : "column"}
+          sx={{ width: "100%", display: "flex", gap: 2 }}
+        >
+          <Box>
+            <Paper elevation={3} className="sticky top-20">
+              <Tabs
+                orientation={mediumViewport ? "vertical" : "horizontal"}
+                scrollButtons="auto"
+                allowScrollButtonsMobile
+                variant="scrollable"
+                value={value}
+                aria-label="basic tabs"
+              >
+                <Tab
+                  icon={<AccountBox />}
+                  iconPosition={mediumViewport ? "top" : "start"}
+                  sx={{ textTransform: "capitalize" }}
+                  label="Profile"
+                  value="1"
+                  onClick={() => navigate("/profile")}
+                />
+                <Tab
+                  icon={<ManageAccounts />}
+                  iconPosition={mediumViewport ? "top" : "start"}
+                  sx={{ textTransform: "capitalize" }}
+                  label="Change Profile"
+                  value="2"
+                  onClick={() => navigate("/profile/change")}
+                />
+                <Tab
+                  icon={<Key />}
+                  iconPosition={mediumViewport ? "top" : "start"}
+                  sx={{ textTransform: "capitalize" }}
+                  label="Change Password"
+                  value="3"
+                  onClick={() => navigate("/profile/password")}
+                />
+
+                <Tab
+                  icon={<Portrait />}
+                  iconPosition={mediumViewport ? "top" : "start"}
+                  sx={{ textTransform: "capitalize" }}
+                  label="Upload Image"
+                  value="4"
+                  onClick={() => navigate("/profile/avatar")}
+                />
+              </Tabs>
+            </Paper>
+          </Box>
+          <Paper elevation={4} className="flex-1 p-4">
+            {children}
+          </Paper>
+        </Box>
+      );
+  }
 };
 export default Profile;

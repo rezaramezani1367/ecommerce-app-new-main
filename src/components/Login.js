@@ -106,25 +106,15 @@ const Login = () => {
     },
   });
   useEffect(() => {
-    if (status && userError.length) {
-      Toast.fire({
-        icon: "error",
-        title: userError,
-      });
-    }
-    else if (status && Object.keys(userData).length) {
-      Toast.fire({
-        icon: "success",
-        title: `${userData.username} loged in successfully`,
-      });
+    if (status && userData.IsSuccessLogin) {
       navigate("/");
     }
-  }, [userError, userData]);
+  }, [userData, status]);
   switch (true) {
     case Boolean(userData.username):
       Toast.fire({
         icon: "success",
-        title: `${userData.username} login`,
+        title: `${userData.username} login successfully`,
       });
       return <Navigate to="/" />;
 

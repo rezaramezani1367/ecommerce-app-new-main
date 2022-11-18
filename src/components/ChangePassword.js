@@ -11,6 +11,7 @@ import { ChangePasswordUser } from "../redux/actionUser";
 import { Key, Person } from "@mui/icons-material";
 
 const ChangePassword = () => {
+  const [status, setStatus] = useState(false);
   const {
     user: { userLoading, userData, userError },
   } = useSelector((last) => last);
@@ -56,16 +57,15 @@ const ChangePassword = () => {
     },
     onSubmit: (values) => {
       dispatch(ChangePasswordUser({ ...values, ...userData }));
+      setStatus(true);
     },
     validate,
-    onReset: () => {
-      return {
-        old_password: "",
-        new_password: "",
-        confrim_new_password: "",
-      };
-    },
   });
+  useEffect(() => {
+    if (status && userData.IsSuccessChangePassword) {
+      navigate("/");
+    }
+  }, [userData,status]);
 
   return (
     <HeaderProfile value="3">

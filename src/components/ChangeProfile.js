@@ -50,31 +50,12 @@ const ChangeProfile = () => {
       setStatus(true);
     },
     validate,
-    onReset: () => {
-      return {
-        firstname: "",
-        lastname: "",
-        gender: "",
-        age: "",
-        city: "",
-      };
-    },
   });
   useEffect(() => {
-    if (status && userError.length) {
-      Toast.fire({
-        icon: "error",
-        title: userError,
-      });
-    }
-    else if  (status && Object.keys(userData).length) {
-      Toast.fire({
-        icon: "success",
-        title: `${userData.username} created successfully`,
-      });
+    if (status && userData.IsSuccessChangeProfile) {
       navigate("/profile");
     }
-  }, [userError, userData]);
+  }, [userData, status]);
 
   return (
     <HeaderProfile value="2">

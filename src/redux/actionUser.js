@@ -1,10 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import { Toast } from "./actionCart";
 import { userLoading, userSuccess, userError, client } from "./constants";
 
 export const createUser = (values) => async (dispatch, getState) => {
   dispatch({
     type: userLoading,
-    payload: { ...getState().user, userLoading: true },
+    payload: {
+      ...getState().user,
+      userData: {
+        ...getState().user.userData,
+        IsSuccessSignup: false,
+      },
+      userLoading: true,
+    },
   });
   try {
     const data = await client.post("/user/signup/", {
@@ -15,25 +23,43 @@ export const createUser = (values) => async (dispatch, getState) => {
       type: userSuccess,
       payload: {
         userLoading: false,
-        userData: { ...data },
+        userData: { ...data, IsSuccessSignup: true },
         userError: "",
       },
     });
+    Toast.fire({
+      icon: "success",
+      title: `${values.username} created successfully`,
+    });
   } catch (error) {
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
     dispatch({
       type: userError,
       payload: {
         ...getState().user,
         userLoading: false,
-        userError: error.response ? error.response.data.message : error.message,
+        userError: errorMessage,
       },
+    });
+    Toast.fire({
+      icon: "error",
+      title: errorMessage,
     });
   }
 };
 export const loginUser = (values) => async (dispatch, getState) => {
   dispatch({
     type: userLoading,
-    payload: { ...getState().user, userLoading: true },
+    payload: {
+      ...getState().user,
+      userData: {
+        ...getState().user.userData,
+        IsSuccessLogin: false,
+      },
+      userLoading: true,
+    },
   });
   try {
     const { data } = await client.post("/user/login/", { ...values });
@@ -41,19 +67,30 @@ export const loginUser = (values) => async (dispatch, getState) => {
       type: userSuccess,
       payload: {
         userLoading: false,
-        userData: data.user,
+        userData: { ...data.user, IsSuccessLogin: true },
         userError: "",
       },
     });
     localStorage.setItem("user", JSON.stringify(data.user));
+    Toast.fire({
+      icon: "success",
+      title: `${values.username} logged in successfully`,
+    });
   } catch (error) {
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
     dispatch({
       type: userError,
       payload: {
         ...getState().user,
         userLoading: false,
-        userError: error.response ? error.response.data.message : error.message,
+        userError: errorMessage,
       },
+    });
+    Toast.fire({
+      icon: "error",
+      title: errorMessage,
     });
   }
 };
@@ -116,7 +153,11 @@ export const getProfile = (values) => async (dispatch, getState) => {
 export const changeProfile = (values) => async (dispatch, getState) => {
   dispatch({
     type: userLoading,
-    payload: { ...getState().user, userLoading: true },
+    payload: {
+      ...getState().user,
+      userData: { ...getState().user.userData, IsSuccessChangeProfile: false },
+      userLoading: true,
+    },
   });
   try {
     const data = await client.put(
@@ -131,31 +172,45 @@ export const changeProfile = (values) => async (dispatch, getState) => {
         },
       }
     );
-    console.log(data);
+
     dispatch({
       type: userSuccess,
       payload: {
-        userData: { ...values },
+        userData: { ...values, IsSuccessChangeProfile: true },
         userLoading: false,
         userError: "",
       },
     });
-    console.log(getState().user);
+    Toast.fire({
+      icon: "success",
+      title: `${values.username} change profile successfully`,
+    });
   } catch (error) {
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
     dispatch({
       type: userError,
       payload: {
         ...getState().user,
         userLoading: false,
-        userError: error.response ? error.response.data.message : error.message,
+        userError: errorMessage,
       },
+    });
+    Toast.fire({
+      icon: "error",
+      title: errorMessage,
     });
   }
 };
 export const ChangePasswordUser = (values) => async (dispatch, getState) => {
   dispatch({
     type: userLoading,
-    payload: { ...getState().user, userLoading: true },
+    payload: {
+      ...getState().user,
+      userData: { ...getState().user.userData, IsSuccessChangePassword: false },
+      userLoading: true,
+    },
   });
   try {
     const data = await client.put(
@@ -169,11 +224,14 @@ export const ChangePasswordUser = (values) => async (dispatch, getState) => {
         },
       }
     );
-    console.log(data);
+
     dispatch({
       type: userSuccess,
       payload: {
-        ...getState().user,
+        userData: {
+          ...getState().user.userData,
+          IsSuccessChangePassword: true,
+        },
         userLoading: false,
         userError: "",
       },
@@ -182,9 +240,7 @@ export const ChangePasswordUser = (values) => async (dispatch, getState) => {
       icon: "success",
       title: `${values.username} change password successfully`,
     });
-    console.log(getState().user);
   } catch (error) {
-    console.log(error);
     const errorMessage = error.response
       ? error.response.data.message
       : error.message;

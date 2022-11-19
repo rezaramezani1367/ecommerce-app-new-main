@@ -62,7 +62,7 @@ export default function Header({ setMode, mode }) {
   }, []);
   React.useEffect(() => {
      // validation token when faild
-    if (userError === "invalid signature") {
+    if (userError === "invalid signature"||userError === "please log in") {
       dispatch(logoutUser());
       Toast.fire({
         title: `Please login again`,

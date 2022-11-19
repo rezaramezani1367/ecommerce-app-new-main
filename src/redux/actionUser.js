@@ -258,3 +258,65 @@ export const ChangePasswordUser = (values) => async (dispatch, getState) => {
     });
   }
 };
+export const UploadProfileImage = (values) => async (dispatch, getState) => {
+  console.log(values.newImage)
+  const formData = new FormData();
+  formData.append("profile-image", values.newImage);
+
+
+  dispatch({
+    type: userLoading,
+    payload: {
+      ...getState().user,
+      userData: {
+        ...getState().user.userData,
+        IsSuccessUploadProfileImage: false,
+      },
+      userLoading: true,
+    },
+  });
+  try {
+    const data = await client.post(
+      "/user/profile-image",
+      formData,
+      {
+        headers: {
+          authorization: `Bearer ${values.token}`,
+        },
+      }
+    );
+
+    dispatch({
+      type: userSuccess,
+      payload: {
+        userData: {
+          ...getState().user.userData,
+          IsSuccessUploadProfileImage: true,
+        },
+        userLoading: false,
+        userError: "",
+      },
+    });
+    Toast.fire({
+      icon: "success",
+      title: `profile image changed successfully`,
+    });
+  } catch (error) {
+    console.log(error);
+    const errorMessage = error.response
+      ? error.response.data.message
+      : error.message;
+    dispatch({
+      type: userError,
+      payload: {
+        ...getState().user,
+        userLoading: false,
+        userError: errorMessage,
+      },
+    });
+    Toast.fire({
+      icon: "error",
+      title: errorMessage,
+    });
+  }
+};

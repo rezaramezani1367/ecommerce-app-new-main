@@ -14,8 +14,10 @@ import Grid from "@mui/material/Unstable_Grid2";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProducts } from "../redux/actionProducts";
 import { Stack } from "@mui/system";
-import { StarOutline,Visibility } from "@mui/icons-material";
+import { StarOutline, Visibility } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
+import Loading from "./Loading";
+import ErrorPage from "./ErrorPage";
 
 const Products = () => {
   const navigate = useNavigate();
@@ -29,9 +31,9 @@ const Products = () => {
 
   switch (true) {
     case productLoading:
-      return <div>loading...</div>;
+      return <Loading />;
     case Boolean(productError):
-      return <div>{productError}</div>;
+      return <ErrorPage error={productError}/>;
 
     default:
       return (
@@ -39,7 +41,10 @@ const Products = () => {
           <Grid container spacing={3}>
             {productData.map((item, index) => (
               <Grid xs={12} md={6} lg={4} key={item._id}>
-                <Card onClick={() => navigate(`/product/${item._id}`)} elevation={4}>
+                <Card
+                  onClick={() => navigate(`/product/${item._id}`)}
+                  elevation={4}
+                >
                   <CardActionArea>
                     <Box className="h-80 w-full md:h-64 p-3 flex justify-center items-center border-b bg-white">
                       <img
@@ -47,17 +52,17 @@ const Products = () => {
                         alt={item.name}
                         onError={({ currentTarget }) => {
                           currentTarget.onerror = null; // prevents looping
-                          currentTarget.src='https://mui.com/static/images/cards/contemplative-reptile.jpg';
+                          currentTarget.src =
+                            "https://mui.com/static/images/cards/contemplative-reptile.jpg";
                         }}
-                      
                         className="max-h-full max-w-full"
                       />
                     </Box>
                     <CardContent className="relative ">
                       <Stack
                         direction="row"
-                        alignItems="center" 
-                        justifyContent='space-between'
+                        alignItems="center"
+                        justifyContent="space-between"
                         className="absolute -top-7 left-0 w-full px-4 text-yellow-500"
                       >
                         <Rating
@@ -78,7 +83,6 @@ const Products = () => {
                             />
                           }
                         />
-                        
                       </Stack>
                       <Stack direction="row" className="mb-4">
                         <Typography

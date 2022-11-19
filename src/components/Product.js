@@ -14,6 +14,8 @@ import {
   Delete,
 } from "@mui/icons-material";
 import { addToCart, minusFromCart } from "../redux/actionCart";
+import Loading from "./Loading";
+import ErrorPage from "./ErrorPage";
 
 const Product = () => {
   const [cart, setCart] = useState(null);
@@ -34,9 +36,9 @@ const Product = () => {
 
   switch (true) {
     case productLoading:
-      return <div>loading...</div>;
+      return <Loading />;
     case Boolean(productError):
-      return <div>{productError}</div>;
+      return <ErrorPage error={productError} />;
 
     default:
       return (

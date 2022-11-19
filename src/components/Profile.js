@@ -19,6 +19,7 @@ import {
   ManageAccounts,
   Portrait,
 } from "@mui/icons-material";
+import Loading from "./Loading";
 const Profile = () => {
   const {
     user: { userLoading, userData, userError },
@@ -30,53 +31,60 @@ const Profile = () => {
 
   return (
     <HeaderProfile value="1">
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: { xs: "column", sm: "row" },
-          gap: 3,
-        }}
-      >
-        <Box>
-          <Avatar
-            variant={""}
-            alt="The image"
-            src={userData.image}
-            sx={{
-              width: 100,
-              height: 100,
-              bgcolor: grey[400],
-            }}
-            className="border"
-          />
-        </Box>
+      {userLoading ? (
+        <Loading />
+      ) : (
         <Box
           sx={{
-            display: "grid",
-            flexGrow: 1,
+            display: "flex",
+            flexDirection: { xs: "column", sm: "row" },
             gap: 3,
-            gridTemplateColumns: { xs: "100px 1fr", lg: "100px 1fr 100px 1fr" },
-            alignItems: "center",
           }}
         >
-          <Box className="border-r font-bold capitalize">user name</Box>
-          <Box>{userData.username}</Box>
-          <Box className="border-r font-bold capitalize">email</Box>
-          <Box>{userData.email}</Box>
-          <Box className="border-r font-bold capitalize">mobile</Box>
-          <Box>{userData.mobile}</Box>
-          <Box className="border-r font-bold capitalize">first name</Box>
-          <Box>{userData.firstname}</Box>
-          <Box className="border-r font-bold capitalize">last name</Box>
-          <Box>{userData.lastname}</Box>
-          <Box className="border-r font-bold capitalize">gender</Box>
-          <Box>{userData.gender}</Box>
-          <Box className="border-r font-bold capitalize">age</Box>
-          <Box>{userData.age}</Box>
-          <Box className="border-r font-bold capitalize">city</Box>
-          <Box>{userData.city}</Box>
+          <Box>
+            <Avatar
+              variant={""}
+              alt="The image"
+              src={userData.image}
+              sx={{
+                width: 100,
+                height: 100,
+                bgcolor: grey[400],
+              }}
+              className="border"
+            />
+          </Box>
+          <Box
+            sx={{
+              display: "grid",
+              flexGrow: 1,
+              gap: 3,
+              gridTemplateColumns: {
+                xs: "100px 1fr",
+                lg: "100px 1fr 100px 1fr",
+              },
+              alignItems: "center",
+            }}
+          >
+            <Box className="border-r font-bold capitalize">user name</Box>
+            <Box>{userData.username}</Box>
+            <Box className="border-r font-bold capitalize">email</Box>
+            <Box>{userData.email}</Box>
+            <Box className="border-r font-bold capitalize">mobile</Box>
+            <Box>{userData.mobile}</Box>
+            <Box className="border-r font-bold capitalize">first name</Box>
+            <Box>{userData.firstname}</Box>
+            <Box className="border-r font-bold capitalize">last name</Box>
+            <Box>{userData.lastname}</Box>
+            <Box className="border-r font-bold capitalize">gender</Box>
+            <Box>{userData.gender}</Box>
+            <Box className="border-r font-bold capitalize">age</Box>
+            <Box>{userData.age}</Box>
+            <Box className="border-r font-bold capitalize">city</Box>
+            <Box>{userData.city}</Box>
+          </Box>
         </Box>
-      </Box>
+      )}
     </HeaderProfile>
   );
 };

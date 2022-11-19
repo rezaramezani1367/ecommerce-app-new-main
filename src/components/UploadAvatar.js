@@ -1,54 +1,78 @@
-import { HighlightOff } from "@mui/icons-material";
+import { Close, Crop, FileUpload, HighlightOff } from "@mui/icons-material";
 import { LoadingButton } from "@mui/lab";
-import { Avatar, Box, Button, IconButton } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  IconButton,
+  Avatar as AvatarMui,
+} from "@mui/material";
 import { grey } from "@mui/material/colors";
-import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { UploadProfileImage } from "../redux/actionUser";
 import { HeaderProfile } from "./Profile";
+import Avatar from "react-avatar-edit";
+import { Toast } from "../redux/actionCart";
+import { useNavigate } from "react-router-dom";
 
 const UploadAvatar = () => {
+  const navigate = useNavigate();
+  const [status, setStatus] = useState(false);
   const {
     user: { userLoading, userData, userError },
   } = useSelector((last) => last);
   const dispatch = useDispatch();
   const [newImage, setNewImage] = useState("");
+  const [open, setOpen] = useState(false);
 
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setNewImage(null);
+  };
+
+  const onBeforeFileLoad = (elem) => {
+    // size <=2mb
+    if (elem.target.files[0].size > 2048000) {
+      alert("File is too big!");
+      elem.target.value = "";
+    }
+  };
+  const onCrop = (preview) => {
+    console.log(preview);
+    setNewImage(preview);
+  };
+  const onClose = () => {
+    setNewImage(null);
+  };
+  useEffect(() => {
+    if (status && userData.IsSuccessUploadProfileImage) {
+      navigate("/profile");
+    }
+  }, [userData, status]);
   return (
     <HeaderProfile value="4">
-      <form
+      <Box
+        component="form"
         className={`flex justify-center items-center flex-col gap-3 ${
           userLoading ? "pointer-events-none" : ""
         }`}
         onSubmit={(e) => e.preventDefault()}
       >
-        <input
-          onChange={(e) => {
-            const file = e.target.files[0];
-            console.log(e.target);
-
-            if (file && file.type.substring(0, 5) === "image") {
-              setNewImage(file);
-              console.log(file);
-            }
-          }}
-          accept="image/*"
-          style={{ display: "none" }}
-          id="image-input"
-          type="file"
-        />
-        <label htmlFor="image-input">
-          <Button variant="contained" component="span">
-            select Image
-          </Button>
-        </label>
-        <Box className="h-32  justify-center items-center">
-          <Box className="w-40 h-full">
-            <img
-              variant={"square"}
+        <Box className="h-48  justify-center items-center">
+          <Box className="w-48 h-full">
+            <AvatarMui
+              variant={""}
               alt="The image"
-              src={newImage ? URL.createObjectURL(newImage) : userData.image}
+              src={newImage ? newImage : userData.image}
               sx={{
                 width: "100%",
                 height: "100%",
@@ -61,9 +85,7 @@ const UploadAvatar = () => {
         {newImage ? (
           <IconButton
             onClick={() => {
-              URL.revokeObjectURL(newImage);
               setNewImage("");
-              document.getElementById("image-input").value = null;
             }}
           >
             <HighlightOff />
@@ -71,20 +93,95 @@ const UploadAvatar = () => {
         ) : (
           ""
         )}
-        <Box>
+        <Box display="flex" gap={2}>
+          <Button
+            variant="contained"
+            startIcon={<Crop />}
+            color="info"
+            onClick={handleClickOpen}
+            sx={{ textTransform: "capitalize" }}
+          >
+            select avatar
+          </Button>
           <LoadingButton
             loading={userLoading}
             variant="contained"
-            className="block"
+            sx={{ textTransform: "capitalize" }}
             type="submit"
+            startIcon={<FileUpload />}
             onClick={() => {
-              dispatch(UploadProfileImage({ newImage, ...userData }));
+              if (newImage) {
+                dispatch(UploadProfileImage({ newImage, ...userData }));
+                setStatus(true);
+              } else {
+                Toast.fire({
+                  icon: "error",
+                  title: `please select new avatar image`,
+                });
+              }
             }}
           >
-            upload Image
+            upload
           </LoadingButton>
         </Box>
-      </form>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle
+            id="alert-dialog-title"
+            sx={{
+              textAlign: "center",
+              borderBottom: 1,
+              borderColor: "divider",
+            }}
+          >
+            {"Upload Image Profile"}
+          </DialogTitle>
+          <DialogContent
+            sx={{
+              marginY: 2,
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              maxHeight: 400,
+            }}
+          >
+            <Box sx={{ minWidth: 250, maxWidth: 450 }}>
+              <Avatar
+                width={390}
+                height={295}
+                src=""
+                alt=""
+                onCrop={onCrop}
+                onClose={onClose}
+                onBeforeFileLoad={onBeforeFileLoad}
+                exportAsSquare={true}
+              />
+            </Box>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              variant="contained"
+              onClick={() => setOpen(false)}
+              autoFocus
+              startIcon={<Crop />}
+            >
+              Save
+            </Button>
+            <Button
+              variant="contained"
+              color="error"
+              onClick={handleClose}
+              endIcon={<Close />}
+            >
+              close
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
     </HeaderProfile>
   );
 };

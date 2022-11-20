@@ -55,7 +55,7 @@ const Cart = () => {
         <>
           <Box
             className="overflow-auto  p-1"
-            sx={{ maxHeight: { xs: 350, md: 400 } }}
+            sx={{ maxHeight: { xs: 350, md: '100%' } }}
           >
             <Paper
               elevation={4}

@@ -47,7 +47,6 @@ const UploadAvatar = () => {
     }
   };
   const onCrop = (preview) => {
-    console.log(preview);
     setNewImage(preview);
   };
   const onClose = () => {
@@ -159,6 +158,8 @@ const UploadAvatar = () => {
                 onClose={onClose}
                 onBeforeFileLoad={onBeforeFileLoad}
                 exportAsSquare={true}
+                // exportQuality={0}
+                exportSize={400}
               />
             </Box>
           </DialogContent>

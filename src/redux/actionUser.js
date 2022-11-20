@@ -259,7 +259,7 @@ export const ChangePasswordUser = (values) => async (dispatch, getState) => {
   }
 };
 export const UploadProfileImage = (values) => async (dispatch, getState) => {
-  console.log(values.newImage);
+  
   const base64Response = await fetch(`${values.newImage}`);
   const blob = await base64Response.blob();
   const formData = new FormData();

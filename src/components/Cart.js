@@ -18,13 +18,14 @@ import {
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, minusFromCart, removeItmeCart } from "../redux/actionCart";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const [totalPrice, setTotalPrice] = useState(0);
   const {
     cart: { cartLoading, cartData, cartError },
   } = useSelector((last) => last);
-
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   React.useEffect(() => {
     let result = 0;
@@ -33,6 +34,11 @@ const Cart = () => {
     });
     setTotalPrice(result);
   }, [cartData]);
+  const submitCart = () => {
+    localStorage.getItem("address")
+      ? navigate("/checkout")
+      : navigate("/address");
+  };
   switch (true) {
     case Boolean(!cartData.length):
       return (
@@ -47,7 +53,10 @@ const Cart = () => {
     default:
       return (
         <>
-          <Box className="overflow-auto  p-1" sx={{maxHeight:{xs:350,md:400}}}>
+          <Box
+            className="overflow-auto  p-1"
+            sx={{ maxHeight: { xs: 350, md: 400 } }}
+          >
             <Paper
               elevation={4}
               className=""
@@ -251,6 +260,7 @@ const Cart = () => {
               size="large"
               variant="contained"
               startIcon={<ShoppingCartCheckout />}
+              onClick={submitCart}
             >
               Checkout
             </Button>

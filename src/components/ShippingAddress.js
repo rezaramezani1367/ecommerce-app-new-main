@@ -3,12 +3,16 @@ import {
   Email,
   Key,
   LocalShipping,
+  LocationCity,
+  LocationOn,
+  MarkunreadMailbox,
   PhoneAndroid,
   Portrait,
 } from "@mui/icons-material";
 
 import {
   Box,
+  Button,
   Divider,
   InputAdornment,
   Paper,
@@ -27,21 +31,29 @@ import { createUser } from "../redux/actionUser";
 import { textAlign } from "@mui/system";
 
 const ShippingAddress = () => {
-  const [status, setStatus] = useState(false);
   const {
     user: { userLoading, userData, userError },
   } = useSelector((last) => last);
   const navigate = useNavigate();
-  const dispatch = useDispatch();
   const validate = (values) => {
     let errors = {};
-   
+    if (values.address.length < 5) {
+      errors.address = "address must be at least 5 characters";
+    }
+    if (values.city.length < 3) {
+      errors.city = "City must be at least 3 characters";
+    }
+    if (!/^[1-9][0-9]{9}$/.test(values.postalCode)) {
+      errors.postalCode = `The postalCode field must be number(10character) and Should
+  not begin with 0 example 1234567890`;
+    }
     if (!/^[0][9][0-9]{9}$/.test(values.phone)) {
-      errors.phone = `The mobile field must be number(11character) and started by
+      errors.phone = `The phone field must be number(11character) and started by
       09 example 09123456789`;
     }
     return errors;
   };
+ 
   const formik = useFormik({
     initialValues: {
       address: "",
@@ -49,17 +61,25 @@ const ShippingAddress = () => {
       postalCode: "",
       phone: "",
     },
+    enableReinitialize: true,
     onSubmit: (values) => {
-      dispatch(createUser(values));
-      setStatus(true);
+      localStorage.setItem("address", JSON.stringify(values));
+      Toast.fire({
+        icon: "success",
+        title: `shipping addrss submitted successfully`,
+      });
+      navigate("/checkout");
     },
     validate,
   });
   useEffect(() => {
-    if (status && userData.IsSuccessSignup) {
-      navigate("/login");
+    if (localStorage.getItem("address")) {
+      console.log(JSON.parse(localStorage.getItem("address")));
+      formik.setValues(JSON.parse(localStorage.getItem("address")));
+      console.log(formik.values)
     }
-  }, [userData, status]);
+  }, []);
+  // useEffect(() => {}, []);
 
   switch (true) {
     default:
@@ -78,7 +98,7 @@ const ShippingAddress = () => {
                 borderBottom: 1,
                 borderColor: "divider",
                 overflow: "hidden",
-                padding: 2.5,
+                padding: 2.2,
                 textAlign: "center",
               }}
             >
@@ -93,144 +113,115 @@ const ShippingAddress = () => {
             </Box>
             <Box
               component="form"
-             
               noValidate
               autoComplete="off"
               onSubmit={formik.handleSubmit}
             >
-              <Box  className="flex flex-col gap-4 p-4">
-              <CustomField
-                error={formik.errors.username && formik.touched.username}
-                helperText={
-                  formik.errors.username && formik.touched.username
-                    ? formik.errors.username
-                    : ""
-                }
-                label="Username"
-                name="username"
-                id="username"
-                autoComplete="username"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <AccountCircle />
-                    </InputAdornment>
-                  ),
-                }}
-                size="small"
-                fullWidth
-              />
-              <CustomField
-                error={formik.errors.email && formik.touched.email}
-                helperText={
-                  formik.errors.email && formik.touched.email
-                    ? formik.errors.email
-                    : ""
-                }
-                label="Email"
-                name="email"
-                id="email"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Email />
-                    </InputAdornment>
-                  ),
-                }}
-                size="small"
-                fullWidth
-              />
+              <Box className="flex flex-col gap-4 p-4">
+                <CustomField
+                  error={formik.errors.address && formik.touched.address}
+                  helperText={
+                    formik.errors.address && formik.touched.address
+                      ? formik.errors.address
+                      : ""
+                  }
+                  label="Address"
+                  name="address"
+                  id="address"
+                  value={formik.values.address}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LocationOn />
+                      </InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                  fullWidth
+                />
+                <CustomField
+                  error={formik.errors.city && formik.touched.city}
+                  helperText={
+                    formik.errors.city && formik.touched.city
+                      ? formik.errors.city
+                      : ""
+                  }
+                  label="City"
+                  name="city"
+                  id="city"
+                  value={formik.values.city}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <LocationCity />
+                      </InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                  fullWidth
+                />
 
-              <CustomField
-                error={formik.errors.password && formik.touched.password}
-                helperText={
-                  formik.errors.password && formik.touched.password
-                    ? formik.errors.password
-                    : ""
-                }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Key />
-                    </InputAdornment>
-                  ),
-                }}
-                label="Password"
-                name="password"
-                id="password"
-                autoComplete="current-password"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                size="small"
-                fullWidth
-                type="password"
-              />
-              <CustomField
-                error={
-                  formik.errors.confrimPassword &&
-                  formik.touched.confrimPassword
-                }
-                helperText={
-                  formik.errors.confrimPassword &&
-                  formik.touched.confrimPassword
-                    ? formik.errors.confrimPassword
-                    : ""
-                }
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <Key />
-                    </InputAdornment>
-                  ),
-                }}
-                label="Confrim Password"
-                name="confrimPassword"
-                id="confrimPassword"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                size="small"
-                fullWidth
-                type="password"
-              />
-              <CustomField
-                error={formik.errors.mobile && formik.touched.mobile}
-                helperText={
-                  formik.errors.mobile && formik.touched.mobile
-                    ? formik.errors.mobile
-                    : ""
-                }
-                label="Mobile"
-                name="mobile"
-                id="mobile"
-                onChange={formik.handleChange}
-                onBlur={formik.handleBlur}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <PhoneAndroid />
-                    </InputAdornment>
-                  ),
-                }}
-                size="small"
-                fullWidth
-              />
+                <CustomField
+                  error={formik.errors.postalCode && formik.touched.postalCode}
+                  helperText={
+                    formik.errors.postalCode && formik.touched.postalCode
+                      ? formik.errors.postalCode
+                      : ""
+                  }
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <MarkunreadMailbox />
+                      </InputAdornment>
+                    ),
+                  }}
+                  label="PostalCode"
+                  name="postalCode"
+                  id="postalCode"
+                  value={formik.values.postalCode}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  size="small"
+                  fullWidth
+                />
+                <CustomField
+                  error={formik.errors.phone && formik.touched.phone}
+                  helperText={
+                    formik.errors.phone && formik.touched.phone
+                      ? formik.errors.phone
+                      : ""
+                  }
+                  label="Phone"
+                  name="phone"
+                  id="phone"
+                  value={formik.values.phone}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <PhoneAndroid />
+                      </InputAdornment>
+                    ),
+                  }}
+                  size="small"
+                  fullWidth
+                />
               </Box>
               <Divider />
               <Box className="text-center p-3">
-                <LoadingButton
-                  loading={userLoading}
-                  loadingPosition="start"
+                <Button
                   sx={{ minWidth: 120 }}
                   variant="contained"
-                  startIcon={<Portrait />}
+                  startIcon={<LocalShipping />}
                   type="submit"
                 >
-                  Signup
-                </LoadingButton>
+                  Submit
+                </Button>
               </Box>
             </Box>
           </Paper>

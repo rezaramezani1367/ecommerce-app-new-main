@@ -11,6 +11,7 @@ import ChangeProfile from "./components/ChangeProfile";
 import ChangePassword from "./components/ChangePassword";
 import UploadAvatar from "./components/UploadAvatar";
 import ShippingAddress from "./components/ShippingAddress";
+import Checkout from "./components/Checkout";
 
 const RouterSection = () => {
   return (
@@ -27,6 +28,7 @@ const RouterSection = () => {
           <Route path="/profile/password" element={<ChangePassword />} />
           <Route path="/profile/avatar" element={<UploadAvatar />} />
           <Route path="/address" element={<ShippingAddress />} />
+          <Route path="/checkout" element={<Checkout />} />
         </Route>
       </Routes>
     </Container>

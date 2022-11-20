@@ -77,7 +77,8 @@ const UploadAvatar = () => {
                 height: "100%",
                 bgcolor: grey[300],
               }}
-              className="border"
+              className="border cursor-pointer"
+              onClick={handleClickOpen}
             />
           </Box>
         </Box>

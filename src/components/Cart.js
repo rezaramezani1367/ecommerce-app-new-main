@@ -58,9 +58,10 @@ const Cart = () => {
             sx={{ maxHeight: { xs: 350, md: '100%' } }}
           >
             <Paper
-              elevation={4}
+              elevation={3}
+              
               className=""
-              sx={{ display: { xs: "none", md: "block", borderRadius: 0 } }}
+              sx={{ display: { xs: "none", md: "block", borderRadius: 0, } }}
             >
               <Grid
                 container
@@ -68,6 +69,7 @@ const Cart = () => {
                 padding={1}
                 alignItems="center"
                 className="text-center font-bold text-xl capitalize"
+                sx={{borderBottom:1,borderColor: "divider"}}
               >
                 <Grid sx={{ width: { xs: 200, md: 170 } }}>Image</Grid>
                 <Grid md={3}>Name</Grid>
@@ -79,11 +81,13 @@ const Cart = () => {
             {cartData.map((item, index) => (
               <Paper
                 key={item._id}
-                elevation={4}
+                elevation={1}
                 sx={{
                   borderRadius: 0,
                   textAlign: { md: "left", md: "center" },
+                  borderBottom:1,borderColor: "divider"
                 }}
+                
                 className="overflow-hidden p-2 md:p-0 relative"
               >
                 <Grid
@@ -237,13 +241,15 @@ const Cart = () => {
           </Box>
           <Box className="flex justify-end mt-2 px-1">
             <Paper
-              elevation={3}
+              elevation={1}
+              sx={{border:1,borderColor: "divider"}}
               className="flex w-72 gap-2 items-center p-2 font-bold "
             >
               <Typography
                 variant="h6"
                 component="span"
-                className="border-r pr-2"
+                className="pr-2"
+                sx={{borderRight:2,borderColor: "divider"}}
               >
                 Total Price
               </Typography>

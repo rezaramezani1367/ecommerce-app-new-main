@@ -40,13 +40,14 @@ const Products = () => {
         <>
           <Grid container spacing={3}>
             {productData.map((item, index) => (
-              <Grid xs={12} md={6} lg={4} key={item._id}>
+              <Grid xs={12} md={6} lg={4} key={item._id} >
                 <Card
+                sx={{ border: 1, borderColor: "divider" }}
                   onClick={() => navigate(`/product/${item._id}`)}
-                  elevation={4}
+                  elevation={3}
                 >
                   <CardActionArea>
-                    <Box className="h-80 w-full md:h-64 p-3 flex justify-center items-center border-b bg-white">
+                    <Box className="h-80 w-full md:h-64 p-3 flex justify-center items-center" sx={{ borderBottom: 1, borderColor: "divider" }}>
                       <img
                         src={item.image}
                         alt={item.name}

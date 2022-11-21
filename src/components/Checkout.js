@@ -17,6 +17,7 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { submitOrder } from "../redux/actionOrder";
 
 const Checkout = () => {
+  const [status, setStatus] = useState(false);
   const currentAddress = JSON.parse(localStorage.getItem("address"));
   const [totalPrice, setTotalPrice] = useState(0);
   const {
@@ -36,12 +37,13 @@ const Checkout = () => {
   }, [cartData]);
 
   useEffect(() => {
-    if (Object.keys(orderData).length) {
+    if (status && Object.keys(orderData).length) {
       navigate("/order");
     }
   }, [orderData]);
 
   const SubmitOrders = () => {
+    setStatus(true);
     const orderItems = cartData.map((item, index) => {
       return { product: item._id, qty: item.quantity };
     });

@@ -2,7 +2,6 @@ import { Toast } from "./actionCart";
 import { orderLoading, orderSuccess, orderError, client } from "./constants";
 
 export const submitOrder = (values) => async (dispatch, getState) => {
-    console.log(values)
   dispatch({
     type: orderLoading,
     payload: { ...getState().order, orderData: [], orderLoading: true },
@@ -28,13 +27,12 @@ export const submitOrder = (values) => async (dispatch, getState) => {
       },
     });
     Toast.fire({
-        icon: "success",
-        title: "order submitted successfully",
-      });
-      localStorage.removeItem('cart')
-      console.log(getState().order)
+      icon: "success",
+      title: "order submitted successfully",
+    });
+    localStorage.removeItem("cart");
+    console.log(getState().order);
   } catch (error) {
-    console.log(error)
     const errorMessage = error.response
       ? error.response.data.message
       : error.message;
@@ -52,3 +50,50 @@ export const submitOrder = (values) => async (dispatch, getState) => {
     });
   }
 };
+export const getOrders =
+  ({ token }) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: orderLoading,
+      payload: { ...getState().order, orderData: [], orderLoading: true },
+    });
+    try {
+      const { data } = await client.get(
+        "/order",
+
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch({
+        type: orderSuccess,
+        payload: {
+          orderLoading: false,
+          orderData: [...data],
+          orderError: "",
+        },
+      });
+
+      console.log(getState().order);
+    } catch (error) {
+      console.log(error);
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      dispatch({
+        type: orderError,
+        payload: {
+          ...getState().orders,
+          orderLoading: false,
+          orderError: errorMessage,
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: errorMessage,
+      });
+    }
+  };

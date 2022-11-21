@@ -99,11 +99,11 @@ const Cart = () => {
                   }}
                 >
                   <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 }}>
-                    <Box className="w-full h-full flex items-center">
+                    <Box sx={{justifyContent:{xs:'start',sm:'center'}}} className="w-full h-full flex items-center">
                       <img
                         src={item.image}
                         alt="11"
-                        className="max-h-full max-w-full"
+                        className="max-h-full"
                         onError={({ currentTarget }) => {
                           currentTarget.onerror = null; // prevents looping
                           currentTarget.src =

@@ -25,8 +25,12 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart, minusFromCart, removeItmeCart } from "../redux/actionCart";
 import { useNavigate } from "react-router-dom";
+import styled from "@emotion/styled";
+
 
 const Checkout = () => {
+
+ 
   
   const currentAddress = JSON.parse(localStorage.getItem("address"));
   const [totalPrice, setTotalPrice] = useState(0);
@@ -44,7 +48,7 @@ const Checkout = () => {
   return (
     <>
       {/* cart section */}
-      <Accordion sx={{ border: 1, borderColor: "divider" }} defaultExpanded={true}>
+      <Accordion  disableGutters  sx={{ border: 1,borderBottom:0,borderColor: "divider" }} defaultExpanded={true}>
         <AccordionSummary
           sx={{ borderBottom: 1, borderColor: "divider" }}
           expandIcon={<ExpandMore />}
@@ -98,8 +102,8 @@ const Checkout = () => {
                     gap: { xs: 1 },
                   }}
                 >
-                  <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 }}>
-                    <Box className="w-full h-full flex items-center">
+                  <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 ,}}>
+                    <Box sx={{justifyContent:{xs:'start',sm:'center'}}} className="w-full h-full flex items-center">
                       <img
                         src={item.image}
                         alt="11"
@@ -242,7 +246,7 @@ const Checkout = () => {
         </AccordionDetails>
       </Accordion>
       {/* shipping address section */}
-      <Accordion sx={{ border: 1, borderColor: "divider" }} elevation={3}>
+      <Accordion disableGutters  sx={{ border: 1,borderBottom:0,borderColor: "divider" }} >
         <AccordionSummary
           sx={{ borderBottom: 1, borderColor: "divider" }}
           expandIcon={<ExpandMore />}

@@ -31,6 +31,14 @@ import { createUser } from "../redux/actionUser";
 import { textAlign } from "@mui/system";
 
 const ShippingAddress = () => {
+  const currentAddress = localStorage.getItem("address")
+    ? JSON.parse(localStorage.getItem("address"))
+    : {
+        address: "",
+        city: "",
+        postalCode: "",
+        phone: "",
+      };
   const {
     user: { userLoading, userData, userError },
   } = useSelector((last) => last);
@@ -53,14 +61,9 @@ const ShippingAddress = () => {
     }
     return errors;
   };
- 
+
   const formik = useFormik({
-    initialValues: {
-      address: "",
-      city: "",
-      postalCode: "",
-      phone: "",
-    },
+    initialValues: currentAddress,
     enableReinitialize: true,
     onSubmit: (values) => {
       localStorage.setItem("address", JSON.stringify(values));
@@ -72,14 +75,7 @@ const ShippingAddress = () => {
     },
     validate,
   });
-  useEffect(() => {
-    if (localStorage.getItem("address")) {
-      console.log(JSON.parse(localStorage.getItem("address")));
-      formik.setValues(JSON.parse(localStorage.getItem("address")));
-      console.log(formik.values)
-    }
-  }, []);
-  // useEffect(() => {}, []);
+
 
   switch (true) {
     default:

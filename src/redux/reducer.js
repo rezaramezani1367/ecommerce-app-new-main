@@ -8,6 +8,9 @@ import {
   userLoading,
   userSuccess,
   userError,
+  orderLoading,
+  orderSuccess,
+  orderError,
 } from "./constants";
 
 export const products = (
@@ -52,6 +55,22 @@ export const user = (
     case userSuccess:
       return payload;
     case userError:
+      return payload;
+
+    default:
+      return state;
+  }
+};
+export const order = (
+  state = { orderLoading: false, orderData: [], orderError: "" },
+  { type, payload }
+) => {
+  switch (type) {
+    case orderLoading:
+      return payload;
+    case orderSuccess:
+      return payload;
+    case orderError:
       return payload;
 
     default:

@@ -1,13 +1,4 @@
-import {
-  Add,
-  Close,
-  ShoppingCart,
-  Remove,
-  Delete,
-  ShoppingCartCheckout,
-  Edit,
-  ExpandMore,
-} from "@mui/icons-material";
+import { ShoppingCartCheckout, Edit, ExpandMore } from "@mui/icons-material";
 import {
   Paper,
   Box,
@@ -15,29 +6,25 @@ import {
   Unstable_Grid2 as Grid,
   Button,
   Typography,
-  IconButton,
-  Divider,
   Accordion,
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addToCart, minusFromCart, removeItmeCart } from "../redux/actionCart";
+import {} from "../redux/actionCart";
 import { useNavigate } from "react-router-dom";
-import styled from "@emotion/styled";
-
+import { submitOrder } from "../redux/actionOrder";
 
 const Checkout = () => {
-
- 
-  
   const currentAddress = JSON.parse(localStorage.getItem("address"));
   const [totalPrice, setTotalPrice] = useState(0);
   const {
     cart: { cartLoading, cartData, cartError },
+    user: { userLoading, userData, userError },
   } = useSelector((last) => last);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   useEffect(() => {
     let result = 0;
     cartData.forEach((item) => {
@@ -45,10 +32,30 @@ const Checkout = () => {
     });
     setTotalPrice(result);
   }, [cartData]);
+  const SubmitOrders = () => {
+    const orderItems = cartData.map((item, index) => {
+      return { product: item._id, qty: item.quantity };
+    });
+    dispatch(
+      submitOrder({
+        orderItems,
+        shippingAddress: currentAddress,
+        paymentMethod: "cash",
+        shippingPrice: "0",
+        totalPrice,
+        token: userData.token,
+      })
+    );
+  };
+
   return (
     <>
       {/* cart section */}
-      <Accordion  disableGutters  sx={{ border: 1,borderBottom:0,borderColor: "divider" }} defaultExpanded={true}>
+      <Accordion
+        disableGutters
+        sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+        defaultExpanded={true}
+      >
         <AccordionSummary
           sx={{ borderBottom: 1, borderColor: "divider" }}
           expandIcon={<ExpandMore />}
@@ -102,8 +109,11 @@ const Checkout = () => {
                     gap: { xs: 1 },
                   }}
                 >
-                  <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 ,}}>
-                    <Box sx={{justifyContent:{xs:'start',sm:'center'}}} className="w-full h-full flex items-center">
+                  <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 }}>
+                    <Box
+                      sx={{ justifyContent: { xs: "start", sm: "center" } }}
+                      className="w-full h-full flex items-center"
+                    >
                       <img
                         src={item.image}
                         alt="11"
@@ -246,7 +256,7 @@ const Checkout = () => {
         </AccordionDetails>
       </Accordion>
       {/* shipping address section */}
-      <Accordion disableGutters  sx={{ border: 1,borderBottom:0,borderColor: "divider" }} >
+      <Accordion disableGutters sx={{ border: 1, borderColor: "divider" }}>
         <AccordionSummary
           sx={{ borderBottom: 1, borderColor: "divider" }}
           expandIcon={<ExpandMore />}
@@ -284,7 +294,7 @@ const Checkout = () => {
             color="secondary"
             sx={{
               textTransform: "capitalize",
-             
+
               marginTop: 3,
               minWidth: 110,
             }}
@@ -300,6 +310,7 @@ const Checkout = () => {
           variant="contained"
           startIcon={<ShoppingCartCheckout />}
           sx={{ textTransform: "capitalize" }}
+          onClick={SubmitOrders}
         >
           Submit Order
         </Button>

@@ -299,7 +299,7 @@ export const UploadProfileImage = (values) => async (dispatch, getState) => {
       title: `profile image changed successfully`,
     });
   } catch (error) {
-    console.log(error);
+    
     const errorMessage = error.response
       ? error.response.data.message
       : error.message;

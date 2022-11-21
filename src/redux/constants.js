@@ -9,6 +9,9 @@ const cartError = "cartError";
 const userLoading = "userLoading";
 const userSuccess = "userSuccess";
 const userError = "userError";
+const orderLoading = "orderLoading";
+const orderSuccess = "orderSuccess";
+const orderError = "orderError";
 const client = axios.create({
   baseURL: "http://kzico.runflare.run",
 });
@@ -23,5 +26,8 @@ export {
   userLoading,
   userSuccess,
   userError,
+  orderLoading,
+  orderSuccess,
+  orderError,
   client
 };

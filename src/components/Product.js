@@ -12,6 +12,7 @@ import {
   Visibility,
   ShoppingCart,
   Delete,
+  Info,
 } from "@mui/icons-material";
 import { addToCart, minusFromCart } from "../redux/actionCart";
 import Loading from "./Loading";
@@ -171,71 +172,82 @@ const Product = () => {
                   direction="row"
                   className="mt-5 w-full gap-2 items-center"
                 >
-                  {cart?.length ? (
-                    <>
-                      <Paper
-                        elevation={4}
-                        className="flex justify-between items-center overflow-hidden"
-                      >
-                        <Button
-                          size="large"
-                          disableElevation
-                          disableRipple
-                          disableFocusRipple
-                          sx={{ borderRadius: "0", minWidth: 50 }}
-                          onClick={() => dispatch(minusFromCart(item))}
+                  {item.countInStock ? (
+                    cart?.length ? (
+                      <>
+                        <Paper
+                          elevation={4}
+                          className="flex justify-between items-center overflow-hidden"
                         >
-                          {cart[0]?.quantity == 1 ? (
-                            <Delete sx={{ color: "red" }} />
-                          ) : (
-                            <Remove sx={{ color: "red" }} />
-                          )}
-                        </Button>
-                        <Stack>
-                          <Typography
-                            variant="span"
-                            className="w-12 min-h-full font-bold text-center text-lg"
+                          <Button
+                            size="large"
+                            disableElevation
+                            disableRipple
+                            disableFocusRipple
+                            sx={{ borderRadius: "0", minWidth: 50 }}
+                            onClick={() => dispatch(minusFromCart(item))}
                           >
-                            {cart[0]?.quantity}
-                          </Typography>
-                          {cart[0].quantity == item.countInStock && (
+                            {cart[0]?.quantity == 1 ? (
+                              <Delete sx={{ color: "red" }} />
+                            ) : (
+                              <Remove sx={{ color: "red" }} />
+                            )}
+                          </Button>
+                          <Stack>
                             <Typography
                               variant="span"
-                              className="w-12 min-h-full font-bold text-center text-red-500"
+                              className="w-12 min-h-full font-bold text-center text-lg"
                             >
-                              max
+                              {cart[0]?.quantity}
                             </Typography>
-                          )}
-                        </Stack>
-                        <Button
-                          size="large"
-                          disableElevation
-                          disableRipple
-                          disableFocusRipple
-                          sx={{ borderRadius: "0", minWidth: 50 }}
-                          onClick={() => dispatch(addToCart(item))}
-                        >
-                          <Add />
-                        </Button>
-                      </Paper>
+                            {cart[0].quantity == item.countInStock && (
+                              <Typography
+                                variant="span"
+                                className="w-12 min-h-full font-bold text-center text-red-500"
+                              >
+                                max
+                              </Typography>
+                            )}
+                          </Stack>
+                          <Button
+                            size="large"
+                            disableElevation
+                            disableRipple
+                            disableFocusRipple
+                            sx={{ borderRadius: "0", minWidth: 50 }}
+                            onClick={() => dispatch(addToCart(item))}
+                          >
+                            <Add />
+                          </Button>
+                        </Paper>
 
+                        <Button
+                          size="small"
+                          variant="outlined"
+                          color="secondary"
+                          className="capitalize"
+                          onClick={() => navigate("/cart")}
+                        >
+                          view Cart
+                        </Button>
+                      </>
+                    ) : (
                       <Button
-                        size="small"
-                        variant="outlined"
-                        color="secondary"
-                        className="capitalize"
-                        onClick={() => navigate("/cart")}
+                        variant="contained"
+                        startIcon={<ShoppingCart />}
+                        onClick={() => dispatch(addToCart(item))}
                       >
-                        view Cart
+                        Add To Cart
                       </Button>
-                    </>
+                    )
                   ) : (
                     <Button
                       variant="contained"
-                      startIcon={<ShoppingCart />}
-                      onClick={() => dispatch(addToCart(item))}
+                      color="info"
+                      startIcon={<Info />}
+                      sx={{ textTransform: "capitalize" }}
                     >
-                      Add To Cart
+                      Notify when available
                     </Button>
                   )}
                 </Stack>

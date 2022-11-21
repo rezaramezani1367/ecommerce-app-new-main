@@ -23,7 +23,7 @@ export const submitOrder = (values) => async (dispatch, getState) => {
       type: orderSuccess,
       payload: {
         orderLoading: false,
-        orderData: [...data],
+        orderData: [data],
         orderError: "",
       },
     });

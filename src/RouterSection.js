@@ -12,6 +12,8 @@ import ChangePassword from "./components/ChangePassword";
 import UploadAvatar from "./components/UploadAvatar";
 import ShippingAddress from "./components/ShippingAddress";
 import Checkout from "./components/Checkout";
+import Order from "./components/Order";
+import Orders from "./components/Orders";
 
 const RouterSection = () => {
   return (
@@ -29,6 +31,8 @@ const RouterSection = () => {
           <Route path="/profile/avatar" element={<UploadAvatar />} />
           <Route path="/address" element={<ShippingAddress />} />
           <Route path="/checkout" element={<Checkout />} />
+          <Route path="/order" element={<Order />} />
+          <Route path="/orders" element={<Orders />} />
         </Route>
       </Routes>
     </Container>

@@ -45,8 +45,8 @@ const ShippingAddress = () => {
   const navigate = useNavigate();
   const validate = (values) => {
     let errors = {};
-    if (values.address.length < 5) {
-      errors.address = "address must be at least 5 characters";
+    if (values.address.length < 10) {
+      errors.address = "address must be at least 10 characters";
     }
     if (values.city.length < 3) {
       errors.city = "City must be at least 3 characters";

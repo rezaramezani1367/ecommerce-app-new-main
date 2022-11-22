@@ -110,7 +110,7 @@ const Cart = () => {
                         onError={({ currentTarget }) => {
                           currentTarget.onerror = null; // prevents looping
                           currentTarget.src =
-                            "https://mui.com/static/images/cards/contemplative-reptile.jpg";
+                          "/images/no-image-blue.png";
                         }}
                       />
                     </Box>

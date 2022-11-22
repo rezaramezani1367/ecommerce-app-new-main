@@ -38,7 +38,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (status && Object.keys(orderData).length) {
-      navigate(`/order/${orderData[0]._id}`);
+      navigate(`/order/${orderData[0]._id}`,{ replace: true });
     }
   }, [orderData]);
 
@@ -60,15 +60,7 @@ const Checkout = () => {
     );
   };
 
-  useEffect(() => {
-    if (!Object.keys(cartData).length) {
-      Toast.fire({
-        icon: "error",
-        title: `cart is empty`,
-      });
-      navigate("/cart");
-    }
-  }, [cartData]);
+
 
   switch (true) {
     case !Boolean(localStorage.getItem("address")):
@@ -77,6 +69,12 @@ const Checkout = () => {
         title: `Please complete shipping address`,
       });
       return <Navigate to="/address" />;
+    case !Boolean(Object.keys(cartData).length):
+      Toast.fire({
+        icon: "info",
+        title: `Cart is Empty`,
+      });
+      return <Navigate to="/cart" />;
     case !Boolean(userData.username):
       Toast.fire({
         icon: "info",
@@ -158,8 +156,7 @@ const Checkout = () => {
                             className="max-h-full max-w-full"
                             onError={({ currentTarget }) => {
                               currentTarget.onerror = null; // prevents looping
-                              currentTarget.src =
-                                "https://mui.com/static/images/cards/contemplative-reptile.jpg";
+                              currentTarget.src = "/images/no-image-blue.png";
                             }}
                           />
                         </Box>

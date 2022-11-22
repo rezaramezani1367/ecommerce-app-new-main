@@ -1,5 +1,11 @@
 import { Toast } from "./actionCart";
-import { orderLoading, orderSuccess, orderError, client } from "./constants";
+import {
+  orderLoading,
+  orderSuccess,
+  orderError,
+  client,
+  cartSuccess,
+} from "./constants";
 
 export const submitOrder = (values) => async (dispatch, getState) => {
   dispatch({
@@ -30,8 +36,15 @@ export const submitOrder = (values) => async (dispatch, getState) => {
       icon: "success",
       title: "order submitted successfully",
     });
+    dispatch({
+      type: cartSuccess,
+      payload: {
+        cartData: [],
+        cartLoading: false,
+        cartError: "",
+      },
+    });
     localStorage.removeItem("cart");
-    
   } catch (error) {
     const errorMessage = error.response
       ? error.response.data.message
@@ -76,8 +89,6 @@ export const getOrders =
           orderError: "",
         },
       });
-
-      
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
@@ -97,7 +108,7 @@ export const getOrders =
     }
   };
 export const getOrderDetails =
-  ({ token ,id}) =>
+  ({ token, id }) =>
   async (dispatch, getState) => {
     dispatch({
       type: orderLoading,
@@ -122,8 +133,6 @@ export const getOrderDetails =
           orderError: "",
         },
       });
-
-     
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message

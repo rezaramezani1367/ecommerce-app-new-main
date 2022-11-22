@@ -20,7 +20,7 @@ export const getAllProducts = () => async (dispatch, getState) => {
         productError: "",
       },
     });
-    // console.log(data)
+    
   } catch (error) {
     dispatch({
       type: productError,

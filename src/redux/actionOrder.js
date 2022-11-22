@@ -31,7 +31,7 @@ export const submitOrder = (values) => async (dispatch, getState) => {
       title: "order submitted successfully",
     });
     localStorage.removeItem("cart");
-    console.log(getState().order);
+    
   } catch (error) {
     const errorMessage = error.response
       ? error.response.data.message
@@ -77,7 +77,7 @@ export const getOrders =
         },
       });
 
-      console.log(getState().order);
+      
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
@@ -123,7 +123,7 @@ export const getOrderDetails =
         },
       });
 
-      console.log(getState().order);
+     
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message

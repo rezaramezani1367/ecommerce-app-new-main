@@ -55,13 +55,12 @@ const Cart = () => {
         <>
           <Box
             className="overflow-auto  p-1"
-            sx={{ maxHeight: { xs: 350, md: '100%' } }}
+            sx={{ maxHeight: { xs: 350, md: "100%" } }}
           >
             <Paper
               elevation={3}
-              
               className=""
-              sx={{ display: { xs: "none", md: "block", borderRadius: 0, } }}
+              sx={{ display: { xs: "none", md: "block", borderRadius: 0 } }}
             >
               <Grid
                 container
@@ -69,7 +68,7 @@ const Cart = () => {
                 padding={1}
                 alignItems="center"
                 className="text-center font-bold text-xl capitalize"
-                sx={{borderBottom:1,borderColor: "divider"}}
+                sx={{ borderBottom: 1, borderColor: "divider" }}
               >
                 <Grid sx={{ width: { xs: 200, md: 170 } }}>Image</Grid>
                 <Grid md={3}>Name</Grid>
@@ -85,9 +84,9 @@ const Cart = () => {
                 sx={{
                   borderRadius: 0,
                   textAlign: { md: "left", md: "center" },
-                  borderBottom:1,borderColor: "divider"
+                  borderBottom: 1,
+                  borderColor: "divider",
                 }}
-                
                 className="overflow-hidden p-2 md:p-0 relative"
               >
                 <Grid
@@ -99,7 +98,11 @@ const Cart = () => {
                   }}
                 >
                   <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 }}>
-                    <Box sx={{justifyContent:{xs:'start',sm:'center'}}} className="w-full h-full flex items-center">
+                    <Box
+                      sx={{ justifyContent: { xs: "start", sm: "center" } }}
+                      className="w-full h-full flex items-center cursor-pointer"
+                      onClick={() => navigate(`/product/${item._id}`)}
+                    >
                       <img
                         src={item.image}
                         alt="11"
@@ -118,7 +121,8 @@ const Cart = () => {
                       gap={1}
                       alignItems="center"
                       sx={{ justifyContent: { sm: "start", md: "center" } }}
-                      className="capitalize"
+                      className="capitalize cursor-pointer"
+                      onClick={() => navigate(`/product/${item._id}`)}
                     >
                       <Typography
                         variant="span"
@@ -159,7 +163,8 @@ const Cart = () => {
                       sx={{ justifyContent: { xs: "start", sm: "center" } }}
                     >
                       <Paper
-                        elevation={4}
+                        elevation={1}
+                        sx={{ border: 1, borderColor: "divider" }}
                         className="flex justify-between items-center overflow-hidden"
                       >
                         <Button
@@ -242,14 +247,14 @@ const Cart = () => {
           <Box className="flex justify-end mt-2 px-1">
             <Paper
               elevation={1}
-              sx={{border:1,borderColor: "divider"}}
+              sx={{ border: 1, borderColor: "divider" }}
               className="flex w-72 gap-2 items-center p-2 font-bold "
             >
               <Typography
                 variant="h6"
                 component="span"
                 className="pr-2"
-                sx={{borderRight:2,borderColor: "divider"}}
+                sx={{ borderRight: 2, borderColor: "divider" }}
               >
                 Total Price
               </Typography>

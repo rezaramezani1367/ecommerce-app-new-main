@@ -149,7 +149,8 @@ const Checkout = () => {
                       <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 }}>
                         <Box
                           sx={{ justifyContent: { xs: "start", sm: "center" } }}
-                          className="w-full h-full flex items-center"
+                          className="w-full h-full flex items-center cursor-pointer"
+                          onClick={() => navigate(`/product/${item._id}`)}
                         >
                           <img
                             src={item.image}
@@ -169,7 +170,8 @@ const Checkout = () => {
                           gap={1}
                           alignItems="center"
                           sx={{ justifyContent: { sm: "start", md: "center" } }}
-                          className="capitalize"
+                          className="capitalize cursor-pointer"
+                          onClick={() => navigate(`/product/${item._id}`)}
                         >
                           <Typography
                             variant="span"

@@ -43,7 +43,7 @@ const Product = () => {
 
     default:
       return (
-        <>
+        <Paper sx={{ border: 1, borderColor: "divider", padding: 1 }}>
           {productData.map((item, index) => (
             <Grid
               container
@@ -53,8 +53,9 @@ const Product = () => {
             >
               <Grid rowSpacing={0} xs={12} md={6} className="relative ">
                 <Box
-                  className="w-full p-3 flex justify-center items-center border bg-white shadow-inner"
-                  sx={{ height: 350 }}
+                  className="w-full p-3 flex justify-center items-center"
+                  sx={{ border: 0.25, borderColor: "divider" ,height: 350}}
+                  
                 >
                   <img
                     src={item.image}
@@ -107,65 +108,100 @@ const Product = () => {
               >
                 <Grid
                   xs={3}
-                  className="font-bold border border-r-0 border-b-0 capitalize"
+                  sx={{ borderLeft: 1, borderTop: 1, borderColor: "divider" }}
+                  className="font-bold capitalize"
                 >
                   Name
                 </Grid>
-                <Grid xs={9} className="border border-b-0 capitalize">
+                <Grid
+                  xs={9}
+                  sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+                  className=" capitalize"
+                >
                   {item.name}
                 </Grid>
                 <Grid
                   xs={3}
-                  className="font-bold border border-r-0 border-b-0 capitalize"
+                  sx={{ borderLeft: 1, borderTop: 1, borderColor: "divider" }}
+                  className="font-boldcapitalize"
                 >
                   Category
                 </Grid>
-                <Grid xs={9} className="border border-b-0 capitalize">
+                <Grid
+                  xs={9}
+                  sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+                  className="apitalize"
+                >
                   {item.category}
                 </Grid>
                 <Grid
                   xs={3}
-                  className="font-bold border border-r-0 border-b-0 capitalize"
+                  sx={{ borderLeft: 1, borderTop: 1, borderColor: "divider" }}
+                  className="font-boldcapitalize"
                 >
                   color
                 </Grid>
-                <Grid xs={9} className="border border-b-0 capitalize">
+                <Grid
+                  xs={9}
+                  sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+                  className="apitalize"
+                >
                   {item.color}
                 </Grid>
                 <Grid
                   xs={3}
-                  className="font-bold border border-r-0 border-b-0 capitalize"
+                  sx={{ borderLeft: 1, borderTop: 1, borderColor: "divider" }}
+                  className="font-boldcapitalize"
                 >
                   brand
                 </Grid>
-                <Grid xs={9} className="border border-b-0 capitalize">
+                <Grid
+                  xs={9}
+                  sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+                  className="apitalize"
+                >
                   {item.brand}
                 </Grid>
                 <Grid
                   xs={3}
-                  className="font-bold border border-r-0 border-b-0  capitalize"
+                  sx={{ borderLeft: 1, borderTop: 1, borderColor: "divider" }}
+                  className="font-bold capitalize"
                 >
                   count In Stock
                 </Grid>
-                <Grid xs={9} className="border border-b-0  capitalize">
+                <Grid
+                  xs={9}
+                  sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+                  className="capitalize"
+                >
                   {item.countInStock}
                 </Grid>
                 <Grid
                   xs={3}
-                  className="font-bold border border-r-0 border-b-0  capitalize"
+                  sx={{ borderLeft: 1, borderTop: 1, borderColor: "divider" }}
+                  className="font-bold capitalize"
                 >
                   price
                 </Grid>
                 <Grid
                   xs={9}
-                  className="border border-b-0  capitalize text-red-500"
+                  sx={{ border: 1, borderBottom: 0, borderColor: "divider" }}
+                  className="capitalize text-red-500"
                 >
                   {item.price.toFixed(2)}$
                 </Grid>
-                <Grid xs={3} className="font-bold border border-r-0 capitalize">
+                <Grid
+                  xs={3}
+                  sx={{ border: 1, borderRight: 0, borderColor: "divider" }}
+                  className="font-bold capitalize"
+                >
                   description
                 </Grid>
-                <Grid xs={9} className="border capitalize">
+                <Grid
+                  xs={9}
+                  sx={{ border: 1, borderColor: "divider" }}
+                  className="capitalize"
+                >
                   {item.description}
                 </Grid>
                 <Stack
@@ -176,7 +212,8 @@ const Product = () => {
                     cart?.length ? (
                       <>
                         <Paper
-                          elevation={4}
+                          elevation={1}
+                          sx={{ border: 1, borderColor: "divider" }}
                           className="flex justify-between items-center overflow-hidden"
                         >
                           <Button
@@ -254,7 +291,7 @@ const Product = () => {
               </Grid>
             </Grid>
           ))}
-        </>
+        </Paper>
       );
   }
 };

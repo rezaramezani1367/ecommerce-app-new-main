@@ -1,4 +1,4 @@
-import { ShoppingCartCheckout, Edit, ExpandMore } from "@mui/icons-material";
+import {  ExpandMore } from "@mui/icons-material";
 import {
   Paper,
   Box,
@@ -9,7 +9,7 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Toast } from "../redux/actionCart";
 import { Navigate, useNavigate, useParams } from "react-router-dom";
@@ -30,7 +30,7 @@ const Order = () => {
     dispatch(getOrderDetails({ token: userData.token, id }));
   }, []);
 
-  console.log(orderData);
+ 
   switch (true) {
     case !Boolean(userData.username):
       Toast.fire({
@@ -38,10 +38,10 @@ const Order = () => {
         title: `Please Login again`,
       });
       return <Navigate to="/login" />;
-      case orderLoading:
+    case orderLoading:
       return <Loading />;
     case Boolean(orderError):
-      return <ErrorPage error={orderError}/>;
+      return <ErrorPage error={orderError} />;
 
     default:
       return (
@@ -190,7 +190,7 @@ const Order = () => {
                               variant="span"
                               className="text-xl text-red-500"
                             >
-                              {product.quantity}
+                              {qty}
                             </Typography>
                           </Stack>
                         </Grid>

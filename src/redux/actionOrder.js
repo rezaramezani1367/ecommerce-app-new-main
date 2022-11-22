@@ -79,7 +79,52 @@ export const getOrders =
 
       console.log(getState().order);
     } catch (error) {
-      console.log(error);
+      const errorMessage = error.response
+        ? error.response.data.message
+        : error.message;
+      dispatch({
+        type: orderError,
+        payload: {
+          ...getState().orders,
+          orderLoading: false,
+          orderError: errorMessage,
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: errorMessage,
+      });
+    }
+  };
+export const getOrderDetails =
+  ({ token ,id}) =>
+  async (dispatch, getState) => {
+    dispatch({
+      type: orderLoading,
+      payload: { ...getState().order, orderData: [], orderLoading: true },
+    });
+    try {
+      const { data } = await client.get(
+        `/order/${id}`,
+
+        {
+          headers: {
+            authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      dispatch({
+        type: orderSuccess,
+        payload: {
+          orderLoading: false,
+          orderData: [data],
+          orderError: "",
+        },
+      });
+
+      console.log(getState().order);
+    } catch (error) {
       const errorMessage = error.response
         ? error.response.data.message
         : error.message;

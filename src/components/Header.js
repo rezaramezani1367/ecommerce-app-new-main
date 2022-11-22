@@ -140,7 +140,10 @@ export default function Header({ setMode, mode }) {
         </ListItemIcon>
         Profile
       </MenuItem>
-      <MenuItem onClick={handleMenuClose}>
+      <MenuItem   onClick={() => {
+          handleMenuClose();
+          navigate("/orders");
+        }}>
         <ListItemIcon>
           <Grading fontSize="small" />
         </ListItemIcon>

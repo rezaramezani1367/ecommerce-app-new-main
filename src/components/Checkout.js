@@ -38,7 +38,7 @@ const Checkout = () => {
 
   useEffect(() => {
     if (status && Object.keys(orderData).length) {
-      navigate("/order");
+      navigate(`/order/${orderData[0]._id}`);
     }
   }, [orderData]);
 
@@ -72,7 +72,17 @@ const Checkout = () => {
 
   switch (true) {
     case !Boolean(localStorage.getItem("address")):
+      Toast.fire({
+        icon: "info",
+        title: `Please complete shipping address`,
+      });
       return <Navigate to="/address" />;
+    case !Boolean(userData.username):
+      Toast.fire({
+        icon: "info",
+        title: `Please Login again`,
+      });
+      return <Navigate to="/" />;
 
     default:
       return (
@@ -283,7 +293,11 @@ const Checkout = () => {
             </AccordionDetails>
           </Accordion>
           {/* shipping address section */}
-          <Accordion disableGutters sx={{ border: 1, borderColor: "divider" }}>
+          <Accordion
+            disableGutters
+            sx={{ border: 1, borderColor: "divider" }}
+            defaultExpanded={true}
+          >
             <AccordionSummary
               sx={{ borderBottom: 1, borderColor: "divider" }}
               expandIcon={<ExpandMore />}

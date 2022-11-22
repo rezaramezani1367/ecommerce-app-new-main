@@ -1,4 +1,4 @@
-import { Box,Container } from "@mui/system";
+import { Box, Container } from "@mui/system";
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import Product from "./components/Product";
@@ -14,10 +14,11 @@ import ShippingAddress from "./components/ShippingAddress";
 import Checkout from "./components/Checkout";
 import Order from "./components/Order";
 import Orders from "./components/Orders";
+import NotFound from "./components/NotFound";
 
 const RouterSection = () => {
   return (
-    <Container className='py-4'>
+    <Container className="py-4">
       <Routes>
         <Route path="/">
           <Route index element={<Products />} />
@@ -31,8 +32,9 @@ const RouterSection = () => {
           <Route path="/profile/avatar" element={<UploadAvatar />} />
           <Route path="/address" element={<ShippingAddress />} />
           <Route path="/checkout" element={<Checkout />} />
-          <Route path="/order" element={<Order />} />
+          <Route path="/order/:id" element={<Order />} />
           <Route path="/orders" element={<Orders />} />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
     </Container>

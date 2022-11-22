@@ -40,9 +40,15 @@ const UploadAvatar = () => {
   };
 
   const onBeforeFileLoad = (elem) => {
+    let format = ["jpg", "png", "jpeg", "jfif", "pjpeg", "pjp"];
+    if (!format.includes(elem.target.value.split(".")[1])) {
+      alert(`format image must be ${format.join("/")}`);
+      elem.target.value = "";
+    }
+
     // size <=2mb
     if (elem.target.files[0].size > 2048000) {
-      alert("File is too big!");
+      alert("The size of the photo must be less than 2 MB");
       elem.target.value = "";
     }
   };

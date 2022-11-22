@@ -32,10 +32,7 @@ export const submitOrder = (values) => async (dispatch, getState) => {
         orderError: "",
       },
     });
-    Toast.fire({
-      icon: "success",
-      title: "order submitted successfully",
-    });
+
     dispatch({
       type: cartSuccess,
       payload: {

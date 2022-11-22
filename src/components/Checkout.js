@@ -38,7 +38,11 @@ const Checkout = () => {
 
   useEffect(() => {
     if (status && Object.keys(orderData).length) {
-      navigate(`/order/${orderData[0]._id}`,{ replace: true });
+      navigate(`/order/${orderData[0]._id}`);
+      Toast.fire({
+        icon: "success",
+        title: "order submitted successfully",
+      });
     }
   }, [orderData]);
 

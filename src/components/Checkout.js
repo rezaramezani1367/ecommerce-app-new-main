@@ -64,8 +64,6 @@ const Checkout = () => {
     );
   };
 
-
-
   switch (true) {
     case !Boolean(localStorage.getItem("address")):
       Toast.fire({
@@ -150,7 +148,11 @@ const Checkout = () => {
                     >
                       <Grid sx={{ width: { xs: 200, md: 170 }, height: 100 }}>
                         <Box
-                          sx={{ justifyContent: { xs: "start", sm: "center" } }}
+                          sx={{
+                            justifyContent: { xs: "start", sm: "center" },
+                            border: { xs: 0, sm: 1, md: 0 },
+                            borderColor: { xs: "", sm: "divider", md: "" },
+                          }}
                           className="w-full h-full flex items-center cursor-pointer"
                           onClick={() => navigate(`/product/${item._id}`)}
                         >

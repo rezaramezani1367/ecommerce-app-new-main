@@ -1,4 +1,4 @@
-import {  ExpandMore } from "@mui/icons-material";
+import { ExpandMore } from "@mui/icons-material";
 import {
   Paper,
   Box,
@@ -30,7 +30,6 @@ const Order = () => {
     dispatch(getOrderDetails({ token: userData.token, id }));
   }, []);
 
- 
   switch (true) {
     case !Boolean(userData.username):
       Toast.fire({
@@ -109,6 +108,8 @@ const Order = () => {
                           <Box
                             sx={{
                               justifyContent: { xs: "start", sm: "center" },
+                              border: { xs: 0, sm: 1, md: 0 },
+                              borderColor: { xs: "", sm: "divider", md: "" },
                             }}
                             className="w-full h-full flex items-center"
                           >
@@ -118,8 +119,7 @@ const Order = () => {
                               className="max-h-full max-w-full"
                               onError={({ currentTarget }) => {
                                 currentTarget.onerror = null; // prevents looping
-                                currentTarget.src =
-                                "/images/no-image-blue.png";
+                                currentTarget.src = "/images/no-image-blue.png";
                               }}
                             />
                           </Box>

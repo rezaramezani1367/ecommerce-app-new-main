@@ -6,7 +6,6 @@ import {
   Toolbar,
   IconButton,
   Typography,
-  InputBase,
   Badge,
   MenuItem,
   Menu,
@@ -61,8 +60,8 @@ export default function Header({ setMode, mode }) {
     dispatch(getProfile(userData));
   }, []);
   React.useEffect(() => {
-     // validation token when faild
-    if (userError === "invalid signature"||userError === "please log in") {
+    // validation token when faild
+    if (userError === "invalid signature" || userError === "please log in") {
       dispatch(logoutUser());
       Toast.fire({
         title: `Please login again`,
@@ -140,10 +139,12 @@ export default function Header({ setMode, mode }) {
         </ListItemIcon>
         Profile
       </MenuItem>
-      <MenuItem   onClick={() => {
+      <MenuItem
+        onClick={() => {
           handleMenuClose();
           navigate("/orders");
-        }}>
+        }}
+      >
         <ListItemIcon>
           <Grading fontSize="small" />
         </ListItemIcon>

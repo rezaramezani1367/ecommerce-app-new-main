@@ -3,10 +3,8 @@ import {
   Card,
   CardActionArea,
   CardContent,
-  CardMedia,
   Rating,
   Typography,
-  Container,
   useMediaQuery,
 } from "@mui/material";
 
@@ -21,12 +19,15 @@ import Loading from "./Loading";
 import ErrorPage from "./ErrorPage";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
+import PaginationProducs from "./PaginationProducs";
+
 
 const Products = () => {
+  
   const mediumViewport = useMediaQuery("(min-width:768px)");
   const navigate = useNavigate();
   const {
-    products: { productLoading, productData, productError },
+    products: { productLoading, productData, productError,paginationData },
   } = useSelector((last) => last);
   const dispatch = useDispatch();
   useEffect(() => {
@@ -42,8 +43,8 @@ const Products = () => {
     default:
       return (
         <>
-          <Grid container spacing={3}>
-            {productData.map((item, index) => (
+          <Grid container spacing={3} >
+            {paginationData.map((item, index) => (
               <Grid xs={12} md={6} lg={4} key={item._id}>
                 <Card
                   sx={{ border: 1, borderColor: "divider" }}
@@ -142,6 +143,7 @@ const Products = () => {
               </Grid>
             ))}
           </Grid>
+          <PaginationProducs />
         </>
       );
   }

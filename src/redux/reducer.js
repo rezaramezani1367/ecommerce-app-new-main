@@ -14,7 +14,12 @@ import {
 } from "./constants";
 
 export const products = (
-  state = { productLoading: false, productData: [], productError: "" },
+  state = {
+    productLoading: false,
+    productData: [],
+    productError: "",
+    paginationData: [],
+  },
   { type, payload }
 ) => {
   switch (type) {

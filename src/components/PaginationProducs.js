@@ -7,32 +7,47 @@ const pageSize = 9;
 const PaginationProducs = () => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
-  const page = parseInt(query.get("page") || "1", 10);
+  const [page, setPage] = useState(parseInt(query.get("page") || "1", 10));
   const [paginationData, setPaginationData] = useState({
     count: 0,
     from: (page - 1) * pageSize,
     to: page * pageSize,
   });
   const {
-    products: { productLoading, productData, productError },
+    products: { productData },
   } = useSelector((last) => last);
   const dispatch = useDispatch();
+
   useEffect(() => {
-    setPaginationData({ ...paginationData, count: productData.length });
-    dispatch(getPaginateProducts(paginationData.from, paginationData.to));
-  }, [paginationData.from]);
-  const handlePageChange = (e, page) => {
+    setPage(parseInt(query.get("page") || "1", 10));
     window.scrollTo({
       top: 0,
-      // behavior: "smooth",
+      behavior:'auto'
     });
-    const from = (page - 1) * pageSize;
-    const to = page * pageSize;
-    setPaginationData({ ...paginationData, from, to });
+    dispatch(getPaginateProducts((page - 1) * pageSize, page * pageSize));
+    setPaginationData({ ...paginationData, count: productData.length });
+
+    
+  }, [paginationData.from, location.search, page]);
+
+  
+  const handlePageChange = (e, page) => {
+    setPaginationData({
+      ...paginationData,
+      from: (page - 1) * pageSize,
+      to: page * pageSize,
+    });
   };
 
   return (
-    <Box display="flex" justifyContent="center" marginY={2}>
+    <Box
+      display="flex"
+      justifyContent="center"
+      marginTop={3}
+      paddingTop={3}
+      borderTop={1}
+      borderColor="divider"
+    >
       <Pagination
         siblingCount={1}
         boundaryCount={1}

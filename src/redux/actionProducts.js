@@ -18,7 +18,7 @@ export const getAllProducts = () => async (dispatch, getState) => {
         productLoading: false,
         productData: [...data],
         productError: "",
-        paginationData:[],
+        paginationData: [],
       },
     });
   } catch (error) {
@@ -59,18 +59,18 @@ export const getProduct = (id) => async (dispatch, getState) => {
     });
   }
 };
-export const getPaginateProducts = (from, to) => async (dispatch, getState) => {
+export const getPaginateProducts = (from, to) => (dispatch, getState) => {
   dispatch({
     type: productLoading,
     payload: { ...getState().products, productLoading: true },
   });
+
   try {
     dispatch({
       type: productSuccess,
       payload: {
         ...getState().products,
         productLoading: false,
-
         productError: "",
         paginationData: getState().products.productData.slice(from, to),
       },

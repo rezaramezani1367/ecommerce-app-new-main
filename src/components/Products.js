@@ -9,6 +9,7 @@ import PaginationProducs from "./PaginationProducs";
 import ProducsItem from "./ProducsItem";
 
 const Products = () => {
+  const [newLoading, setNewLoading] = useState(false);
   const {
     products: { productLoading, productData, productError, paginationData },
   } = useSelector((last) => last);
@@ -18,22 +19,30 @@ const Products = () => {
   }, []);
 
   switch (true) {
-    case productLoading:
-      return <Loading />;
     case Boolean(productError):
       return <ErrorPage error={productError} />;
 
     default:
       return (
         <>
-          <Grid container spacing={3}>
-            {paginationData.map((item, index) => (
-              <Grid xs={12} md={6} lg={4} key={item._id}>
-                <ProducsItem item={item} />
-              </Grid>
-            ))}
-          </Grid>
-          <PaginationProducs />
+          {productLoading ? (
+            <Loading />
+          ) : (
+            <>
+              {newLoading ? (
+                <Loading />
+              ) : (
+                <Grid container spacing={3}>
+                  {paginationData.map((item, index) => (
+                    <Grid xs={12} md={6} lg={4} key={item._id}>
+                      <ProducsItem item={item} />
+                    </Grid>
+                  ))}
+                </Grid>
+              )}
+              <PaginationProducs setNewLoading={setNewLoading} />
+            </>
+          )}
         </>
       );
   }

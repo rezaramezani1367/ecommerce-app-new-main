@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { getPaginateProducts } from "../redux/actionProducts";
 const pageSize = 9;
-const PaginationProducs = () => {
+const PaginationProducs = ({ setNewLoading }) => {
   const location = useLocation();
   const query = new URLSearchParams(location.search);
   const [page, setPage] = useState(parseInt(query.get("page") || "1", 10));
@@ -19,18 +19,20 @@ const PaginationProducs = () => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    setNewLoading(true);
     setPage(parseInt(query.get("page") || "1", 10));
     window.scrollTo({
       top: 0,
-      behavior:'auto'
+      behavior: "auto",
     });
     dispatch(getPaginateProducts((page - 1) * pageSize, page * pageSize));
     setPaginationData({ ...paginationData, count: productData.length });
-
-    
+    const timer = setTimeout(() => {
+      setNewLoading(false);
+    }, 50);
+    return () => clearTimeout(timer);
   }, [paginationData.from, location.search, page]);
 
-  
   const handlePageChange = (e, page) => {
     setPaginationData({
       ...paginationData,
@@ -43,8 +45,9 @@ const PaginationProducs = () => {
     <Box
       display="flex"
       justifyContent="center"
+      paddingTop={2}
       marginTop={3}
-      paddingTop={3}
+      marginBottom={1}
       borderTop={1}
       borderColor="divider"
     >

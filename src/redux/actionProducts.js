@@ -66,13 +66,13 @@ export const getPaginateProducts = (from, to) => (dispatch, getState) => {
   });
 
   try {
-    dispatch({
+     dispatch({
       type: productSuccess,
       payload: {
         ...getState().products,
         productLoading: false,
         productError: "",
-        paginationData: getState().products.productData.slice(from, to),
+        paginationData:  getState().products.productData.slice(from, to),
       },
     });
   } catch (error) {
